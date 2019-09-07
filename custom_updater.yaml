@@ -1,4 +1,4 @@
-  show_installable: 
+  show_installable: true
   hide_sensor: false
   track:
     - components

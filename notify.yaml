@@ -3,3 +3,6 @@
   services:
     - service: ios_petro
     - service: ios_lambo
+    
+- platform: alexa_media
+  name: alexa

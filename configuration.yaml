@@ -45,7 +45,14 @@ logger:
 lovelace:
   mode: yaml
 
-custom_updater: !include custom_updater.yaml
+panel_custom:
+  - name: zwavegraph2
+    sidebar_title: Z-Wave Graph
+    sidebar_icon: mdi:access-point-network
+    url_path: zwave
+
+#custom_updater: !include custom_updater.yaml
+hacs: !include hacs.yaml
 
 input_text:
   alexa_say:

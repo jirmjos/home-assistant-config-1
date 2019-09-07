@@ -9,9 +9,7 @@ resources:
     type: js
   - url: /local/card-tools/card-tools.js?
     type: js
-  - url: /local/card-tools/card-modder.js?
-    type: js
-  - url: /local/lovelace/config-template-card.js?
+  - url: /local/community/config-template-card/config-template-card.js
     type: module
   - url: /local/lovelace/lovelace-text-input-row.js?
     type: js
@@ -29,6 +27,8 @@ resources:
     type: js
   - url: /local/lovelace/card-loader.js?track=true
     type: js
+  - url: /local/community/lovelace-card-mod/card-mod.js?
+    type: module
     
 # ANCHORS
     
@@ -38,80 +38,84 @@ anchors:
   # ENTITIES CARD #
   #################
   
-  entities_card_no_headers: &entities_card_no_headers
-    type: entities
+  entities_no_header_toggle: &entities_no_header_toggle
+    type: 'custom:hui-entities-card'
     show_header_toggle: off
 
   #############################
   # CARD MODDER REUSED STYLES #
   #############################
-      
-  transparent_title: &transparent_title
-    type: 'custom:card-modder'
-    style:
-      --paper-card-background-color: 'rgba(0, 0, 0, 0.0)'
-      --ha-card-box-shadow: 'none'
-      padding: 0px 10px
-      height: 33px
+  
+  card_mod_transparent_title: &card_mod_transparent_title
+    style: |
+      ha-card {
+        --paper-card-background-color: 'rgba(0, 0, 0, 0.0)';
+        --ha-card-box-shadow: 'none';
+        padding: 0px 10px;
+        height: 33px
+      }
 
   # Main rounded border style
-
-  mainstyle: &mainstyle
-    type: 'custom:card-modder'
-    style:
-      border-radius: 20px
+  card_mod_mainstyle: &card_mod_mainstyle
+    style: |
+      ha-card { border-radius: 20px; }
 
   # Main rounded border style extra margin
-
-  margin_mainstyle: &margin_mainstyle
-    type: 'custom:card-modder'
-    style:
-      border-radius: 20px
-      margin: 0px 15px
-
+  
+  card_mod_margin_mainstyle: &card_mod_margin_mainstyle
+    style: |
+      ha-card { 
+        border-radius: 20px;
+        margin: 0px 15px;
+      }
+  
   # Main rounded border style extra margin
-
-  margin_mainstyle_top: &margin_mainstyle_top
-    type: 'custom:card-modder'
-    style:
-      border-radius: 20px
-      margin: 8px 15px 0px 15px
+  card_mod_margin_mainstyle_top: &card_mod_margin_mainstyle_top
+    style: |
+      ha-card { 
+        border-radius: 20px;
+        margin: 8px 15px 0px 15px;
+      }
 
   # Rounded transparent style ment for vertical-stack-in-card
 
-  bordered_inset_style: &bordered_inset_style
-    type: 'custom:card-modder'
-    style:
-      --ha-card-background: "rgba(0, 0, 0, 0.0)"
-      --ha-card-box-shadow: 'none'
-      border-radius: 5px
-      margin: 5px
+  card_mod_bordered_style: &card_mod_bordered_style
+    style: |
+      ha-card { 
+        --ha-card-background: "rgba(0, 0, 0, 0.0)";
+        --ha-card-box-shadow: 'none';
+        border-radius: 5px;
+        margin: 5px;
+      }
 
   # Basic transparent style ment for vertical-stack-in-card
 
-  transparent_background: &transparent_background
-    type: 'custom:card-modder'
-    style:
-      --paper-card-background-color: 'rgba(0, 0, 0, 0.0)'
-      --ha-card-background: "rgba(0, 0, 0, 0.0)"
-      --ha-card-box-shadow: 'none'
+  card_mod_transparent_background: &card_mod_transparent_background
+    style: |
+      ha-card { 
+        --paper-card-background-color: 'rgba(0, 0, 0, 0.0)';
+        --ha-card-background: "rgba(0, 0, 0, 0.0)";
+        --ha-card-box-shadow: 'none';
+      }
 
   # rounded transparent style ment for vertical-stack-in-card
 
-  rounded_transparent: &rounded_transparent
-    type: 'custom:card-modder'
-    style:
-      --ha-card-background: "rgba(0, 0, 0, 0.0)"
-      --ha-card-box-shadow: 'none'
-      border-radius: 5px
+  card_mod_rounded_transparent: &card_mod_rounded_transparent
+    style: |
+      ha-card { 
+        --ha-card-background: "rgba(0, 0, 0, 0.0)";
+        --ha-card-box-shadow: 'none';
+        border-radius: 5px;
+      }
 
   # Makes any card's inactive colors active.
 
-  active_style: &active_style
-    type: 'custom:card-modder'
-    style:
-      border-radius: 20px
-      --paper-item-icon-color: var(--paper-item-icon-active-color)
+  card_mod_active_style: &card_mod_active_style
+    style: |
+      ha-card { 
+        border-radius: 20px;
+        --paper-item-icon-color: var(--paper-item-icon-active-color);
+      }
 
   ###############################
   # CUSTOM BUTTON-CARDS BUTTONS #
@@ -1565,104 +1569,99 @@ views:
 
           # Door Statuses
 
-          - <<: *margin_mainstyle_top
-            card:
-              <<: *entities_card_no_headers
-              entities:
-                - type: section
-                  label: Door Status
-                - entity: sensor.main_door_hindge_message
-                  name: Main
-                  secondary_info: last-changed
-                - entity: sensor.entry_door_hindge_message
-                  name: Garage
-                  secondary_info: last-changed
-                - entity: sensor.sliding_door_message
-                  name: Patio
-                  secondary_info: last-changed
+          - <<: *entities_no_header_toggle
+            <<: *card_mod_margin_mainstyle_top
+            entities:
+              - type: section
+                label: Door Status
+              - entity: sensor.main_door_hindge_message
+                name: Main
+                secondary_info: last-changed
+              - entity: sensor.entry_door_hindge_message
+                name: Garage
+                secondary_info: last-changed
+              - entity: sensor.sliding_door_message
+                name: Patio
+                secondary_info: last-changed
                   
       - id: alexa_say_card
         type: vertical-stack
         cards:
-          - <<: *margin_mainstyle
-            recursive: false
-            card:
-              type: entities
-              entities:
-                - type: custom:text-input-row
-                  entity: input_text.alexa_say
-                - type: custom:card-loader
-                  wait:
-                    - button-card
-                    - vertical-stack-in-card
-                  card:
-                    type: vertical-stack
+          - type: entities
+            <<: *card_mod_margin_mainstyle
+            entities:
+              - type: custom:text-input-row
+                entity: input_text.alexa_say
+              - type: custom:card-loader
+                wait:
+                  - button-card
+                  - vertical-stack-in-card
+                card:
+                  type: vertical-stack
+                  cards:
+                  - type: horizontal-stack
                     cards:
-                    - type: horizontal-stack
-                      cards:
-                        - <<: *cb_spacer
+                      - <<: *cb_spacer
 
-                        # ALL BUTTON
+                      # ALL BUTTON
 
-                        - <<: *cb_remote_run_script_small
-                          name: All
-                          icon: mdi:amazon-alexa
-                          entity: script.alexa_say_all
-                          tap_action:
-                            action: call-service
-                            service: script.alexa_say_all
+                      - <<: *cb_remote_run_script_small
+                        name: All
+                        icon: mdi:amazon-alexa
+                        entity: script.alexa_say_all
+                        tap_action:
+                          action: call-service
+                          service: script.alexa_say_all
 
-                        # LIVING ROOM ALEXA BUTTON
+                      # LIVING ROOM ALEXA BUTTON
 
-                        - <<: *cb_remote_run_script_small
-                          name: Kitchen
-                          icon: mdi:amazon-alexa
-                          entity: script.alexa_say_living_room
-                          tap_action:
-                            action: call-service
-                            service: script.alexa_say_living_room
+                      - <<: *cb_remote_run_script_small
+                        name: Kitchen
+                        icon: mdi:amazon-alexa
+                        entity: script.alexa_say_living_room
+                        tap_action:
+                          action: call-service
+                          service: script.alexa_say_living_room
 
-                        # MASTER ALEXA BUTTON
+                      # MASTER ALEXA BUTTON
 
-                        - <<: *cb_remote_run_script_small
-                          name: Master
-                          icon: mdi:amazon-alexa
-                          entity: script.alexa_say_master
-                          tap_action:
-                            action: call-service
-                            service: script.alexa_say_master
+                      - <<: *cb_remote_run_script_small
+                        name: Master
+                        icon: mdi:amazon-alexa
+                        entity: script.alexa_say_master
+                        tap_action:
+                          action: call-service
+                          service: script.alexa_say_master
 
-                        # CLEAR TEXT ALEXA BUTTON
+                      # CLEAR TEXT ALEXA BUTTON
 
-                        - <<: *cb_remote_run_script_small
-                          name: Clear
-                          icon: mdi:close
-                          entity: script.clear_alexa_text
-                          tap_action:
-                            action: call-service
-                            service: script.clear_alexa_text
+                      - <<: *cb_remote_run_script_small
+                        name: Clear
+                        icon: mdi:close
+                        entity: script.clear_alexa_text
+                        tap_action:
+                          action: call-service
+                          service: script.clear_alexa_text
 
-                        - <<: *cb_spacer
+                      - <<: *cb_spacer
 
           - type: horizontal-stack
             cards:
-              - <<: *margin_mainstyle
-                card:
-                  <<: *mg_overview_temperature
-                  entities: 
-                    - entity: sensor.ms_temperature
-                      name: Upstairs
-                      color: var(--paper-item-icon-active-color)
-                    - entity: sensor.dining_room_temperature
-                      name: Patio Door
-                      color: '#f39c12'
-                  name: House Temperature
-                  graph: line
-          - <<: *margin_mainstyle
-            card:
-              type: custom:weather-card
-              entity: weather.dark_sky
-              icons: "/local/icons/weather_icons/animated/"
+              - <<: *mg_overview_temperature
+                <<: *card_mod_margin_mainstyle
+                entities: 
+                  - entity: sensor.ms_temperature
+                    name: Upstairs
+                    color: var(--paper-item-icon-active-color)
+                  - entity: sensor.dining_room_temperature
+                    name: Patio Door
+                    color: '#f39c12'
+                name: House Temperature
+                graph: line
+          - type: custom:weather-card
+            <<: *card_mod_margin_mainstyle
+            entity: weather.dark_sky
+            icons: "/local/icons/weather_icons/animated/"
 
             
   ########################################
@@ -2498,10 +2497,9 @@ views:
             card:
               type: vertical-stack
               cards:
-                - <<: *transparent_title
-                  card:
-                    type: markdown
-                    content: "#### Source"
+                - type: markdown
+                  content: "#### Source"
+                  <<: *card_mod_transparent_title
                 - type: horizontal-stack
                   cards:
                     - <<: *cb_spacer_10px
@@ -2595,10 +2593,9 @@ views:
       - id: basement_card
         type: vertical-stack
         cards:
-          - <<: *transparent_title
-            card:
-              type: markdown
-              content: "#### Basement"
+          - type: markdown
+            content: "#### Basement"
+            <<: *card_mod_transparent_title
           - type: horizontal-stack
             cards:
               - <<: *cb_spacer_10px
@@ -2622,10 +2619,9 @@ views:
       - id: garage_card
         type: vertical-stack
         cards:
-          - <<: *transparent_title
-            card:
-              type: markdown
-              content: "#### Garage"
+          - type: markdown
+            content: "#### Garage"
+            <<: *card_mod_transparent_title
           - type: horizontal-stack
             cards:
               - <<: *cb_spacer_10px
@@ -2648,10 +2644,9 @@ views:
       - id: dining_room_card
         type: vertical-stack
         cards:
-          - <<: *transparent_title
-            card:
-              type: markdown
-              content: "#### Dining Room"
+          - type: markdown
+            content: "#### Dining Room"
+            <<: *card_mod_transparent_title
           - type: horizontal-stack
             cards:
               - <<: *cb_spacer_10px
@@ -2674,10 +2669,9 @@ views:
       - id: living_room_card
         type: vertical-stack
         cards:
-          - <<: *transparent_title
-            card:
-              type: markdown
-              content: "#### Living Room"
+          - type: markdown
+            content: "#### Living Room"
+            <<: *card_mod_transparent_title
           - type: horizontal-stack
             cards:
               - <<: *cb_spacer_10px
@@ -2711,10 +2705,9 @@ views:
       - id: office_card
         type: vertical-stack
         cards:
-          - <<: *transparent_title
-            card:
-              type: markdown
-              content: "#### Office"
+          - type: markdown
+            content: "#### Office"
+            <<: *card_mod_transparent_title
           - type: horizontal-stack
             cards:
               - <<: *cb_spacer_10px
@@ -2746,10 +2739,9 @@ views:
       - id: kitchen_card
         type: vertical-stack
         cards:
-          - <<: *transparent_title
-            card:
-              type: markdown
-              content: "#### Kitchen"
+          - type: markdown
+            content: "#### Kitchen"
+            <<: *card_mod_transparent_title
           - type: horizontal-stack
             cards:
               - <<: *cb_spacer_10px
@@ -2786,10 +2778,9 @@ views:
       - id: miscellaneous_card
         type: vertical-stack
         cards:
-          - <<: *transparent_title
-            card:
-              type: markdown
-              content: "#### Miscellaneous"
+          - type: markdown
+            content: "#### Miscellaneous"
+            <<: *card_mod_transparent_title
           - type: horizontal-stack
             cards:
               - <<: *cb_spacer_10px
@@ -2821,10 +2812,9 @@ views:
       - id: master_bedroom_card
         type: vertical-stack
         cards:
-          - <<: *transparent_title
-            card:
-              type: markdown
-              content: "#### Master Bedroom"
+          - type: markdown
+            content: "#### Master Bedroom"
+            <<: *card_mod_transparent_title
           - type: horizontal-stack
             cards:
               - <<: *cb_spacer_10px
@@ -2860,10 +2850,9 @@ views:
       - id: master_bathroom_card
         type: vertical-stack
         cards:
-          - <<: *transparent_title
-            card:
-              type: markdown
-              content: "#### Master Bathroom"
+          - type: markdown
+            content: "#### Master Bathroom"
+            <<: *card_mod_transparent_title
           - type: horizontal-stack
             cards:
               - <<: *cb_spacer_10px
@@ -2895,10 +2884,9 @@ views:
       - id: outdoors_card
         type: vertical-stack
         cards:
-          - <<: *transparent_title
-            card:
-              type: markdown
-              content: "#### Outdoors"
+          - type: markdown
+            content: "#### Outdoors"
+            <<: *card_mod_transparent_title
           - type: horizontal-stack
             cards:
               - <<: *cb_spacer_10px
@@ -2940,57 +2928,53 @@ views:
       #######################
 
       - id: internet_connection
-        <<: *mainstyle
-        card:
-          <<: *entities_card_no_headers
-          entities:
-            - type: section
-              label: Speed Test
-            - type: custom:card-loader
-              wait:
-                - mini-graph-card
-              card:
-                type: vertical-stack
+        <<: *entities_no_header_toggle
+        <<: *card_mod_mainstyle
+        entities:
+          - type: section
+            label: Speed Test
+          - type: custom:card-loader
+            wait:
+              - mini-graph-card
+            card:
+              type: vertical-stack
+              cards:
+              - type: horizontal-stack
                 cards:
-                - type: horizontal-stack
-                  cards:
-                    - <<: *bordered_inset_style
-                      card:
-                        <<: *mg_168h_1pph
-                        entities: 
-                          - sensor.speedtest_download
-                        color_thresholds:
-                          - value: 99.9
-                            color: "#3498db"
-                          - value: 0
-                            color: "#E45E65"
-                    - <<: *bordered_inset_style
-                      card:
-                        <<: *mg_168h_1pph
-                        entities: 
-                          - sensor.speedtest_upload
-                        color_thresholds:
-                          - value: 9.9
-                            color: "#3498db"
-                          - value: 0
-                            color: "#E45E65"
-                - <<: *bordered_inset_style
-                  card:
-                    <<: *mg_168h_1pph
+                  - <<: *mg_168h_1pph
+                    <<: *card_mod_bordered_style
                     entities: 
-                      - sensor.speedtest_ping
+                      - sensor.speedtest_download
                     color_thresholds:
-                      - value: 80
-                        color: "#E45E65"
-                      - value: 0
+                      - value: 99.9
                         color: "#3498db"
+                      - value: 0
+                        color: "#E45E65"
+                  - <<: *mg_168h_1pph
+                    <<: *card_mod_bordered_style
+                    entities: 
+                      - sensor.speedtest_upload
+                    color_thresholds:
+                      - value: 9.9
+                        color: "#3498db"
+                      - value: 0
+                        color: "#E45E65"
+              - <<: *mg_168h_1pph
+                <<: *card_mod_bordered_style
+                entities: 
+                  - sensor.speedtest_ping
+                color_thresholds:
+                  - value: 80
+                    color: "#E45E65"
+                  - value: 0
+                    color: "#3498db"
 
       ##################################
       # HOME ASSISTANT HARDWARE STATUS #
       ##################################
 
       - id: hassio_status
-        type: 'custom:config-template-card'
+        type: custom:config-template-card
         variables:
           - states['sensor.current_version'].state
           - states['sensor.disk_use_total'].state
@@ -3000,59 +2984,52 @@ views:
           - sensor.disk_free_home
           - sensor.disk_use_home
         card:
-          <<: *mainstyle
-          card:
-            type: entities
-            show_header_toggle: false
-            entities:
-              - type: section
-                label: "${ 'NUC i5 --- Ubuntu 18.04.1 LTS --- HA ' + vars[0] }"
-              - type: custom:card-loader
-                wait:
-                  - mini-graph-card
-                card:
-                  type: vertical-stack
-                  cards:
-                    - type: horizontal-stack
-                      cards:
-                        - <<: *transparent_background
-                          card:
-                            type: picture
-                            image: /local/images/devices/nuc_5.png
-                        - <<: *cb_uptime
-                          entity: sensor.nuc_uptime
-                          name: Uptime
-                          icon: mdi:clock-outline
-                    - <<: *transparent_background
-                      card:
-                        <<: *bar_percent
-                        entity: sensor.disk_use_percent_home
-                        title: "${ 'Disk (' + vars[2] + 'Gb/' + vars[1] + 'Gb)' }"
-                    - type: horizontal-stack
-                      cards:
-                        - <<: *transparent_background
-                          card:
-                            <<: *bar_percent
-                            entity: sensor.memory_use_percent
-                            title: RAM
-                        - <<: *transparent_background
-                          card:
-                            <<: *bar_percent
-                            entity: sensor.processor_use
-                            title: CPU
-                    - <<: *rounded_transparent
-                      card:
-                        <<: *mg_168h_1pph
-                        entities: 
-                          - sensor.cpu_temperature
-                        name: Temperature
-                        color_thresholds:
-                          - value: 90
-                            color: "#3498db"
-                          - value: 120
-                            color: "#f39c12"
-                          - value: 150
-                            color: "#E45E65"
+          <<: *entities_no_header_toggle
+          <<: *card_mod_mainstyle
+          entities:
+            - type: section
+              label: "${ 'NUC i5 --- Ubuntu 18.04.1 LTS --- HA ' + vars[0] }"
+            - type: custom:card-loader
+              wait:
+                - mini-graph-card
+              card:
+                type: vertical-stack
+                cards:
+                  - type: horizontal-stack
+                    cards:
+                      - type: picture
+                        <<: *card_mod_transparent_background
+                        image: /local/images/devices/nuc_5.png
+                      - <<: *cb_uptime
+                        entity: sensor.nuc_uptime
+                        name: Uptime
+                        icon: mdi:clock-outline
+                  - <<: *bar_percent
+                    <<: *card_mod_transparent_background
+                    entity: sensor.disk_use_percent_home
+                    title: "${ 'Disk (' + vars[2] + 'Gb/' + vars[1] + 'Gb)' }"
+                  - type: horizontal-stack
+                    cards:
+                      - <<: *bar_percent
+                        <<: *card_mod_transparent_background
+                        entity: sensor.memory_use_percent
+                        title: RAM
+                      - <<: *bar_percent
+                        <<: *card_mod_transparent_background
+                        entity: sensor.processor_use
+                        title: CPU
+                  - <<: *mg_168h_1pph
+                    <<: *card_mod_rounded_transparent
+                    entities: 
+                      - sensor.cpu_temperature
+                    name: Temperature
+                    color_thresholds:
+                      - value: 90
+                        color: "#3498db"
+                      - value: 120
+                        color: "#f39c12"
+                      - value: 150
+                        color: "#E45E65"
 
       ######################
       # UPS - APC BR1500MS #
@@ -3065,247 +3042,225 @@ views:
         entities:
           - sensor.sensor.ups_model
         card:
-          <<: *mainstyle
-          card:
-            <<: *entities_card_no_headers
-            entities:
-              - type: section
-                label: "${ vars[0] }"
-              - type: custom:card-loader
-                wait:
-                  - button-card
-                card:
-                  type: vertical-stack
+          <<: *entities_no_header_toggle
+          <<: *card_mod_mainstyle
+          entities:
+            - type: section
+              label: "${ vars[0] }"
+            - type: custom:card-loader
+              wait:
+                - button-card
+              card:
+                type: vertical-stack
+                cards:
+                  - type: horizontal-stack
+                    cards:
+                      - type: picture
+                        <<: *card_mod_transparent_background
+                        image: /local/images/devices/BR1500G.png
+                      - <<: *cb_uptime
+                        entity: sensor.ups_uptime
+                        name: Uptime
+                        icon: mdi:clock-outline
+                  - type: horizontal-stack
+                    cards:
+                      - <<: *cb_spacer_6px
+                      - <<: *cb_indicator
+                        entity: binary_sensor.ups_online_status
+                      - <<: *cb_minutes_to_hours
+                        entity: sensor.ups_time_left
+                      - <<: *cb_spacer_6px
+                  - <<: *bar_voltage
+                    <<: *card_mod_transparent_background
+                    entity: sensor.ups_input_voltage
+                    title: Input
+                  - type: horizontal-stack
+                    cards:
+                      - <<: *bar_percent
+                        <<: *card_mod_transparent_background
+                        entity: sensor.ups_load
+                        title: Load
+                      - <<: *bar_percent_good
+                        <<: *card_mod_transparent_background
+                        entity: sensor.ups_battery
+                        title: Battery
+
+      ####################################
+      # UNIFI SWITCH 16 PORT POE (150 W) #
+      ####################################
+
+      - id: bonus_room_switch_status
+        <<: *entities_no_header_toggle
+        <<: *card_mod_mainstyle
+        entities:
+          - type: section
+            label: Bonus Room 16 Port POE Switch
+          - type: custom:card-loader
+            wait:
+              - mini-graph-card
+            card:
+              type: vertical-stack
+              cards:
+                - type: horizontal-stack
                   cards:
-                    - type: horizontal-stack
-                      cards:
-                        - <<: *transparent_background
-                          card:
-                            type: picture
-                            image: /local/images/devices/BR1500G.png
-                        - <<: *cb_uptime
-                          entity: sensor.ups_uptime
-                          name: Uptime
-                          icon: mdi:clock-outline
-                    - type: horizontal-stack
-                      cards:
-                        - <<: *cb_spacer_6px
-                        - <<: *cb_indicator
-                          entity: binary_sensor.ups_online_status
-                        - <<: *cb_minutes_to_hours
-                          entity: sensor.ups_time_left
-                        - <<: *cb_spacer_6px
-                    - <<: *transparent_background
-                      card:
-                        <<: *bar_voltage
-                        entity: sensor.ups_input_voltage
-                        title: Input
-                    - type: horizontal-stack
-                      cards:
-                        - <<: *transparent_background
-                          card:
-                            <<: *bar_percent
-                            entity: sensor.ups_load
-                            title: Load
-                        - <<: *transparent_background
-                          card:
-                            <<: *bar_percent_good
-                            entity: sensor.ups_battery
-                            title: Battery
+                    - type: picture
+                      <<: *card_mod_transparent_background
+                      image: /local/images/devices/unifi_16port_switch_2.png
+                    - <<: *cb_uptime
+                      entity: sensor.bonus_room_switch_uptime
+                      name: Uptime
+                      icon: mdi:clock-outline
+                - <<: *mg_168h_1pph
+                  <<: *card_mod_rounded_transparent
+                  entities: 
+                    - sensor.bonus_room_switch_temperature
+                  name: Temperature
+                  color_thresholds:
+                    - value: 90
+                      color: "#3498db"
+                    - value: 120
+                      color: "#f39c12"
+                    - value: 150
+                      color: "#E45E65"
 
       ####################################
       # UNIFI SWITCH 16 PORT POE (150 W) #
       ####################################
 
       - id: bonus_room_switch_status
-        <<: *mainstyle
-        card:
-          <<: *entities_card_no_headers
-          entities:
-            - type: section
-              label: Bonus Room 16 Port POE Switch
-            - type: custom:card-loader
-              wait:
-                - mini-graph-card
-              card:
-                type: vertical-stack
-                cards:
-                  - type: horizontal-stack
-                    cards:
-                      - <<: *transparent_background
-                        card:
-                          type: picture
-                          image: /local/images/devices/unifi_16port_switch_2.png
-                      - <<: *cb_uptime
-                        entity: sensor.bonus_room_switch_uptime
-                        name: Uptime
-                        icon: mdi:clock-outline
-                  - <<: *rounded_transparent
-                    card:
-                      <<: *mg_168h_1pph
-                      entities: 
-                        - sensor.bonus_room_switch_temperature
-                      name: Temperature
-                      color_thresholds:
-                        - value: 90
-                          color: "#3498db"
-                        - value: 120
-                          color: "#f39c12"
-                        - value: 150
-                          color: "#E45E65"
-
-      ####################################
-      # UNIFI SWITCH 16 PORT POE (150 W) #
-      ####################################
-
-      - id: bonus_room_switch_status
-        <<: *mainstyle
-        card:
-          <<: *entities_card_no_headers
-          entities:
-            - type: section
-              label: Server Room 16 Port POE Switch
-            - type: custom:card-loader
-              wait:
-                - mini-graph-card
-              card:
-                type: vertical-stack
-                cards:
-                  - type: horizontal-stack
-                    cards:
-                      - <<: *transparent_background
-                        card:
-                          type: picture
-                          image: /local/images/devices/unifi_16port_switch_2.png
-                      - <<: *cb_uptime
-                        entity: sensor.server_room_switch_uptime
-                        name: Uptime
-                        icon: mdi:clock-outline
-                  - <<: *rounded_transparent
-                    card:
-                      <<: *mg_168h_1pph
-                      entities: 
-                        - sensor.server_room_switch_temperature
-                      name: Temperature
-                      color_thresholds:
-                        - value: 90
-                          color: "#3498db"
-                        - value: 120
-                          color: "#f39c12"
-                        - value: 150
-                          color: "#E45E65"
+        <<: *entities_no_header_toggle
+        <<: *card_mod_mainstyle
+        entities:
+          - type: section
+            label: Server Room 16 Port POE Switch
+          - type: custom:card-loader
+            wait:
+              - mini-graph-card
+            card:
+              type: vertical-stack
+              cards:
+                - type: horizontal-stack
+                  cards:
+                    - type: picture
+                      <<: *card_mod_transparent_background
+                      image: /local/images/devices/unifi_16port_switch_2.png
+                    - <<: *cb_uptime
+                      entity: sensor.server_room_switch_uptime
+                      name: Uptime
+                      icon: mdi:clock-outline
+                - <<: *mg_168h_1pph
+                  <<: *card_mod_rounded_transparent
+                  entities: 
+                    - sensor.server_room_switch_temperature
+                  name: Temperature
+                  color_thresholds:
+                    - value: 90
+                      color: "#3498db"
+                    - value: 120
+                      color: "#f39c12"
+                    - value: 150
+                      color: "#E45E65"
 
       ###############################
       # SYNOLOGY DISKSTATION DS216J #
       ###############################
 
       - id: synology_ds216j
-        <<: *mainstyle
-        card:
-          <<: *entities_card_no_headers
-          entities:
-            - type: section
-              label: Synology DS216J
-            - type: custom:card-loader
-              wait:
-                - mini-graph-card
-              card:
-                type: vertical-stack
-                cards:
-                  - type: horizontal-stack
-                    cards:
-                      - <<: *transparent_background
-                        card:
-                          type: picture
-                          image: /local/images/devices/synology_ds216j_2.png
-                      - <<: *cb_uptime
-                        entity: sensor.synology_uptime
-                        name: Uptime
-                        icon: mdi:clock-outline
-                          
-                  - type: custom:config-template-card
-                    variables:
-                      - states['sensor.total_size_volume_1'].state
-                      - states['sensor.used_space_volume_1'].state
-                    entities:
-                      - sensor.total_size_volume_1
-                      - sensor.used_space_volume_1
-                    card:
-                      <<: *transparent_background
-                      card:
-                        <<: *bar_percent
-                        entity: sensor.volume_used_volume_1
-                        title: "${ 'Disk (' + vars[1] + '/' + vars[0] + ')' }"
-                  - type: horizontal-stack
-                    cards:
-                      - <<: *transparent_background
-                        card:
-                          <<: *bar_percent
-                          entity: sensor.memory_usage_real
-                          title: RAM
-                      - <<: *transparent_background
-                        card:
-                          <<: *bar_percent
-                          entity: sensor.cpu_load_total
-                          title: CPU
-                  - <<: *rounded_transparent
-                    card:
-                      <<: *mg_168h_1pph
-                      entities: 
-                        - sensor.temperature_sda
-                        - sensor.temperature_sdb
-                      name: Temperature
-                      color_thresholds:
-                        - value: 90
-                          color: "#3498db"
-                        - value: 95
-                          color: "#f39c12"
-                        - value: 100
-                          color: "#E45E65"
+        <<: *entities_no_header_toggle
+        <<: *card_mod_mainstyle
+        entities:
+          - type: section
+            label: Synology DS216J
+          - type: custom:card-loader
+            wait:
+              - mini-graph-card
+            card:
+              type: vertical-stack
+              cards:
+                - type: horizontal-stack
+                  cards:
+                    - type: picture
+                      <<: *card_mod_transparent_background
+                      image: /local/images/devices/synology_ds216j_2.png
+                    - <<: *cb_uptime
+                      entity: sensor.synology_uptime
+                      name: Uptime
+                      icon: mdi:clock-outline
+                        
+                - type: custom:config-template-card
+                  variables:
+                    - states['sensor.synology_dsm_total_size_volume_1'].state
+                    - states['sensor.synology_dsm_used_space_volume_1'].state
+                  entities:
+                    - sensor.synology_dsm_total_size_volume_1
+                    - sensor.synology_dsm_used_space_volume_1
+                  card:
+                    <<: *bar_percent
+                    <<: *card_mod_transparent_background
+                    entity: sensor.synology_dsm_volume_used_volume_1
+                    title: "${ 'Disk (' + vars[1] + '/' + vars[0] + ')' }"
+                - type: horizontal-stack
+                  cards:
+                    - <<: *bar_percent
+                      <<: *card_mod_transparent_background
+                      entity: sensor.synology_dsm_memory_usage_real
+                      title: RAM
+                    - <<: *bar_percent
+                      <<: *card_mod_transparent_background
+                      entity: sensor.synology_dsm_cpu_load_total
+                      title: CPU
+                - <<: *mg_168h_1pph
+                  <<: *card_mod_rounded_transparent
+                  entities: 
+                    - sensor.synology_dsm_temperature_sda
+                    - sensor.synology_dsm_temperature_sdb
+                  name: Temperature
+                  color_thresholds:
+                    - value: 90
+                      color: "#3498db"
+                    - value: 95
+                      color: "#f39c12"
+                    - value: 100
+                      color: "#E45E65"
 
       ########################
       # AEOTEC MULTISENSOR 1 #
       ########################
 
       - id: multisensor_1
-        <<: *mainstyle
-        card:
-          <<: *entities_card_no_headers
-          entities:
-            - type: section
-              label: Master Bathroom Aeotec Multisensor 6
-            - type: custom:card-loader
-              wait:
-                - mini-graph-card
-              card:
-                type: vertical-stack
-                cards:
-                  - type: horizontal-stack
-                    cards:
-                      - <<: *transparent_background
-                        card:
-                          type: picture
-                          image: /local/images/devices/aeotec_multisensor6_2.png
-                      - <<: *bordered_inset_style
-                        card:
-                          <<: *mg_inside_temperature
-                          entities: 
-                            - sensor.ms_temperature
-                          name: Temperature
-                  - type: horizontal-stack
-                    cards:
-                      - <<: *bordered_inset_style
-                        card:
-                          <<: *mg_humidity
-                          entities: 
-                            - sensor.ms_humidity
-                          name: Humidity
-                      - <<: *bordered_inset_style
-                        card:
-                          <<: *mg_basic
-                          entities: 
-                            - sensor.ms_luminance
-                          name: Luminance
+        <<: *entities_no_header_toggle
+        <<: *card_mod_mainstyle
+        entities:
+          - type: section
+            label: Master Bathroom Aeotec Multisensor 6
+          - type: custom:card-loader
+            wait:
+              - mini-graph-card
+            card:
+              type: vertical-stack
+              cards:
+                - type: horizontal-stack
+                  cards:
+                    - type: picture
+                      <<: *card_mod_transparent_background
+                      image: /local/images/devices/aeotec_multisensor6_2.png
+                    - <<: *mg_inside_temperature
+                      <<: *card_mod_bordered_style
+                      entities: 
+                        - sensor.ms_temperature
+                      name: Temperature
+                - type: horizontal-stack
+                  cards:
+                    - <<: *mg_humidity
+                      <<: *card_mod_bordered_style
+                      entities: 
+                        - sensor.ms_humidity
+                      name: Humidity
+                    - <<: *mg_basic
+                      <<: *card_mod_bordered_style
+                      entities: 
+                        - sensor.ms_luminance
+                      name: Luminance
 
   ##############
   # VIEW - MAP #
@@ -3316,24 +3271,22 @@ views:
     title: Map
     panel: true
     cards:
-      - type: custom:card-modder
-        style:
-          --primary-text-color: var(--paper-item-icon-active-color)
-        card:
-          id: local_map
-          type: map
-          entities:
-            - entity: zone.home
-            - entity: zone.pharos
-            - entity: zone.qvi
-            - entity: zone.ruckhouse
-            - entity: zone.tops
-            - entity: zone.wegmans
-            - entity: zone.cobbs_hill
-            - entity: zone.flower_city_crossfit
-            - entity: zone.rit_gym
-            - entity: device_tracker.petro
-            - entity: device_tracker.lambo
+      - id: local_map
+        style: |
+          ha-card { --primary-text-color: var(--paper-item-icon-active-color); }
+        type: map
+        entities:
+          - entity: zone.home
+          - entity: zone.pharos
+          - entity: zone.qvi
+          - entity: zone.ruckhouse
+          - entity: zone.tops
+          - entity: zone.wegmans
+          - entity: zone.cobbs_hill
+          - entity: zone.flower_city_crossfit
+          - entity: zone.rit_gym
+          - entity: device_tracker.petro
+          - entity: device_tracker.lambo
 
   ###########################
   # VIEW - NETWORK PRESENCE #
@@ -3351,10 +3304,9 @@ views:
       - id: wireless_devices
         type: vertical-stack
         cards:
-          - <<: *transparent_title
-            card:
-              type: markdown
-              content: "#### Wireless Devices"
+          - type: markdown
+            content: "#### Wireless Devices"
+            <<: *card_mod_transparent_title
           - type: horizontal-stack
             cards:
               - <<: *cb_spacer_10px
@@ -3397,10 +3349,9 @@ views:
       - id: wireless_devices
         type: vertical-stack
         cards:
-          - <<: *transparent_title
-            card:
-              type: markdown
-              content: "#### Wired Devices"
+          - type: markdown
+            content: "#### Wired Devices"
+            <<: *card_mod_transparent_title
           - type: horizontal-stack
             cards:
               - <<: *cb_spacer_10px
@@ -3446,10 +3397,9 @@ views:
       - id: wireless_devices
         type: vertical-stack
         cards:
-          - <<: *transparent_title
-            card:
-              type: markdown
-              content: "#### Mike's Devices"
+          - type: markdown
+            content: "#### Mike's Devices"
+            <<: *card_mod_transparent_title
           - type: horizontal-stack
             cards:
               - <<: *cb_spacer_10px
@@ -3489,10 +3439,9 @@ views:
       - id: wireless_devices
         type: vertical-stack
         cards:
-          - <<: *transparent_title
-            card:
-              type: markdown
-              content: "#### Lindsays's Devices"
+          - type: markdown
+            content: "#### Lindsays's Devices"
+            <<: *card_mod_transparent_title
           - type: horizontal-stack
             cards:
               - <<: *cb_spacer_10px
@@ -3532,10 +3481,9 @@ views:
       - id: wireless_devices
         type: vertical-stack
         cards:
-          - <<: *transparent_title
-            card:
-              type: markdown
-              content: "#### Family Devices"
+          - type: markdown
+            content: "#### Family Devices"
+            <<: *card_mod_transparent_title
           - type: horizontal-stack
             cards:
               - <<: *cb_spacer_10px
@@ -3590,24 +3538,6 @@ views:
               - <<: *cb_spacer_square
               - <<: *cb_spacer_square
               - <<: *cb_spacer_10px
-
-  #################
-  # VIEW - STATUS #
-  #################
-                    
-  - id: home_assistant_status
-    icon: mdi:home-assistant
-    title: Home Assistant Settings
-    cards:
-      - type: vertical-stack
-        cards:
-          - <<: *mainstyle
-            card:
-              type: custom:tracker-card
-              title:
-              trackers:
-                - sensor.custom_card_tracker
-                - sensor.custom_component_tracker
   
   ##################################
   # EXPERIMENTAL BEYOND THIS POINT #
@@ -3621,48 +3551,59 @@ views:
     icon: mdi:cctv
     title: Surveillance
     cards:
-      - <<: *mainstyle
-        card:
-          type: picture-glance
-          title: Garage
-          camera_image: camera.garage_clear
-          entities:
-            - switch.garage_clear_state
-      - <<: *mainstyle
-        card:
-          type: picture-glance
-          title: Downstairs
-          camera_image: camera.living_room_clear
-          entities:
-            - switch.living_room_clear_state
+      - type: picture-glance
+        <<: *card_mod_mainstyle
+        title: Garage
+        camera_image: camera.garage_clear
+        entities:
+          - switch.garage_clear_state
+      - type: picture-glance
+        <<: *card_mod_mainstyle
+        title: Downstairs
+        camera_image: camera.living_room_clear
+        entities:
+          - switch.living_room_clear_state
 
   ###########################
   # VIEW - IMAGE PROCESSING #
   ###########################
-            
+
   - id: image_processing
     icon: mdi:image-search
     title: Image Processing
     cards:
-      - <<: *mainstyle
-        card:
-          type: picture-entity
-          entity: camera.garage_post_process
-          name: Garage
-          show_state: false
-          tap_action:
-            action: call-service
-            service: image_processing.scan
-            service_data:
-              entity_id: image_processing.tensorflow_garage_clear
-      - <<: *mainstyle
-        card:
-          type: picture-entity
-          entity: camera.living_room_post_process
-          name: Living Room
-          show_state: false
-          tap_action:
-            action: call-service
-            service: image_processing.scan
-            service_data:
-              entity_id: image_processing.tensorflow_living_room_clear
+      - type: picture-entity
+        <<: *card_mod_mainstyle
+        entity: camera.garage_post_process
+        name: Garage
+        show_state: false
+        tap_action:
+          action: call-service
+          service: image_processing.scan
+          service_data:
+            entity_id: image_processing.tensorflow_garage_clear
+      - type: picture-entity
+        <<: *card_mod_mainstyle
+        entity: camera.living_room_post_process
+        name: Living Room
+        show_state: false
+        tap_action:
+          action: call-service
+          service: image_processing.scan
+          service_data:
+            entity_id: image_processing.tensorflow_living_room_clear
+
+  ###########
+  # TESTING #
+  ###########
+
+  - id: testing
+    icon: mdi:test-tube
+    title: Testing
+    cards:
+      - type: entities
+        entities: 
+          - media_player.living_room_dot
+        <<: *card_mod_transparent_title
+            
+    

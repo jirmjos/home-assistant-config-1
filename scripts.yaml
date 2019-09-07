@@ -3,10 +3,12 @@ alexa_say_living_room:
   sequence:
     - condition: template
       value_template: "{{ states('input_text.alexa_say') != '' }}"
-    - service: media_player.alexa_tts
+    - service: notify.alexa_media
       data_template:
-        entity_id: media_player.living_room_dot
         message: "{{ states('input_text.alexa_say') }}"
+        data:
+          type: tts
+        target: media_player.living_room_dot
     - delay:
         seconds: 1
 
@@ -15,10 +17,12 @@ alexa_say_master:
   sequence:
     - condition: template
       value_template: "{{ states('input_text.alexa_say') != '' }}"
-    - service: media_player.alexa_tts
+    - service: notify.alexa_media
       data_template:
-        entity_id: media_player.master_dot
         message: "{{ states('input_text.alexa_say') }}"
+        data:
+          type: tts
+        target: media_player.master_dot
     - delay:
         seconds: 1
 
@@ -27,12 +31,14 @@ alexa_say_all:
   sequence:
     - condition: template
       value_template: "{{ states('input_text.alexa_say') != '' }}"
-    - service: media_player.alexa_tts
+    - service: notify.alexa_media
       data_template:
-        entity_id:
+        message: "{{ states('input_text.alexa_say') }}"
+        data:
+          type: tts
+        target:  
           - media_player.living_room_dot
           - media_player.master_dot
-        message: "{{ states('input_text.alexa_say') }}"
     - delay:
         seconds: 1
 

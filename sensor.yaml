@@ -270,3 +270,13 @@
       {%- set days = (time // 86400) %}
       {%- set days = '{}d '.format(days) if days > 0 else '' %}
       {{ 'Less than 1 min' if time < 60 else days + hours + minutes }}
+
+  - platform: sun2
+    monitored_conditions:
+      - dawn
+      - daylight
+      - dusk
+      - night
+      - solar_noon
+      - sunrise
+      - sunset

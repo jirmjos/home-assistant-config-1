@@ -307,3 +307,43 @@ subaru:
   name: SUBARU
   picture:
   track: true
+
+10_4e_89_1c_c8_51:
+  hide_if_away: false
+  icon:
+  mac: 10:4E:89:1C:C8:51
+  name: 10 4e 89 1c c8 51
+  picture:
+  track: true
+
+virtual_box_development:
+  hide_if_away: false
+  icon:
+  mac: 08:00:27:26:77:03
+  name: Virtual Box Development
+  picture:
+  track: true
+
+48_c5_81_7e_9a_3b:
+  hide_if_away: false
+  icon:
+  mac: 48:C5:81:7E:9A:3B
+  name: 48 c5 81 7e 9a 3b
+  picture:
+  track: true
+
+a4_85_30_c6_62_49:
+  hide_if_away: false
+  icon:
+  mac: A4:85:30:C6:62:49
+  name: a4 85 30 c6 62 49
+  picture:
+  track: true
+
+'00_00_00_00_00_01':
+  hide_if_away: false
+  icon:
+  mac: 00:00:00:00:00:01
+  name: 00 00 00 00 00 01
+  picture:
+  track: true
