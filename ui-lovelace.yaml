@@ -1,33 +1,27 @@
 title: Home
 # Exclude entities from "Unused entities" view
 resources:
-  - url: /local/lovelace/button-card.js?
+  - url: /local/community/button-card/button-card.js?
     type: module
-  - url: /local/lovelace/weather-card.js?
+  - url: /local/community/weather-card/weather-card.js?
     type: js
-  - url: /local/lovelace/vertical-stack-in-card.js?
+  - url: /local/community/vertical-stack-in-card/vertical-stack-in-card.js?
     type: js
   - url: /local/card-tools/card-tools.js?
     type: js
   - url: /local/community/config-template-card/config-template-card.js
     type: module
-  - url: /local/lovelace/lovelace-text-input-row.js?
+  - url: /local/community/lovelace-text-input-row/text-input-row.js?
     type: js
-  - url: /local/lovelace/mini-graph-card-bundle.js?
+  - url: /local/community/mini-graph-card/mini-graph-card.js?
     type: module
-  - url: /local/lovelace/tracker-card.js?track=true
-    type: module
-  - url: /local/lovelace/circle-sensor-card.js?
-    type: module
-  - url: /local/lovelace/bar-card.js?
+  - url: /local/community/bar-card/bar-card.js?
     type: js
-  - url: /local/lovelace/popup-card.js?track=true
-    type: js
-  - url: /local/lovelace/fold-entity-row.js?track=true
-    type: js
-  - url: /local/lovelace/card-loader.js?track=true
+  - url: /local/lovelace/card-loader.js?
     type: js
   - url: /local/community/lovelace-card-mod/card-mod.js?
+    type: module
+  - url: /local/community/decluttering-card/decluttering-card.js?
     type: module
     
 # ANCHORS
@@ -185,26 +179,6 @@ anchors:
       card:
         - width: 6px
 
-  # 0px SPACER FOR ? WIDTH BUTTONS
-
-  cb_spacer_0px: &cb_spacer_0px
-    type: custom:button-card
-    color_type: blank-card
-    styles:
-      card:
-        - width: 0px
-        - padding: 0px 0px
-
-  # 76px SPACER
-  
-  cb_remote_spacer_76px: &cb_remote_spacer_76px
-    type: custom:button-card
-    color_type: blank-card
-    styles:
-      card:
-        - width: 76px
-        - margin: 5px 5px 0px 0px
-
   # 105 x ? GLOW - PERSON INFO
 
   cb_overview_persons: &cb_overview_persons
@@ -263,19 +237,21 @@ anchors:
     show_state: false
     show_name: true
     show_label: true
-    label_template: >
-      var i;
-      var status = entity.state;
-      var entities = entity.attributes.entity_id;
-      var count = 0;
-      for (i = 0; i < entities.length; i++) {
-        var state = states[entities[i]].state;
-        if (state === 'on') {
-          count += 1;
+    label: >
+      [[[
+        var i;
+        var status = entity.state;
+        var entities = entity.attributes.entity_id;
+        var count = 0;
+        for (i = 0; i < entities.length; i++) {
+          var state = states[entities[i]].state;
+          if (state === 'on') {
+            count += 1;
+          }
         }
-      }
-      var phrase = (count === 1 ? ' light ' : ' lights ');
-      return (status === 'on' ? count.toString() + phrase + status : status);
+        var phrase = (count === 1 ? ' light ' : ' lights ');
+        return (status === 'on' ? count.toString() + phrase + status : status);
+      ]]]
     styles:
       grid:
         - grid-template-rows: 42px auto 42px
@@ -494,36 +470,42 @@ anchors:
   
   cb_3x_glow_light: &cb_3x_glow_light
     <<: *cb_3x_glow_template_label
-    label_template: >
-      var bri = Math.round(entity.attributes.brightness / 2.55);
-      return (bri ? bri : '0') + '%';
+    label: >
+      [[[
+        var bri = Math.round(entity.attributes.brightness / 2.55);
+        return (bri ? bri : '0') + '%';
+      ]]]
     
   # 3 BUTTONS PER ROW - THEME - COUNTS
     
   cb_3x_glow_counter: &cb_3x_glow_counter
     <<: *cb_3x_glow_template_label
-    label_template: >
-      var i;
-      var entities = entity.attributes.entity_id;
-      var count = 0;
-      for (i = 0; i < entities.length; i++) {
-        var state = states[entities[i]].state;
-        if (state === 'on') {
-          count += 1;
+    label: >
+      [[[
+        var i;
+        var entities = entity.attributes.entity_id;
+        var count = 0;
+        for (i = 0; i < entities.length; i++) {
+          var state = states[entities[i]].state;
+          if (state === 'on') {
+            count += 1;
+          }
         }
-      }
-      return count.toString() + ' of ' + entities.length.toString();
+        return count.toString() + ' of ' + entities.length.toString();
+      ]]]
     
   # 3 BUTTONS PER ROW - THEME - FAN 
   
   cb_3x_glow_fan: &cb_3x_glow_fan
     <<: *cb_3x_glow_template_label
-    label_template: >
-      function capitalizeFirstLetter(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
-      }
-      var speed = entity.attributes.speed;
-      return (speed === 'off' ? '-' : capitalizeFirstLetter(speed));
+    label: >
+      [[[
+        function capitalizeFirstLetter(string) {
+          return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+        }
+        var speed = entity.attributes.speed;
+        return (speed === 'off' ? '-' : capitalizeFirstLetter(speed));
+      ]]]
   
   # 5 BUTTONS PER ROW - USER SET - ICON
   
@@ -706,18 +688,20 @@ anchors:
 
   cb_remote_yamaha_zone: &cb_remote_yamaha_zone
     <<: *cb_remote_power_on
-    label_template: >
-      var mapper = {
-        "switch.zone_1":"input_number.yamaha_receiver",
-        "switch.zone_2":"input_number.yamaha_receiver_zone_2"
-      };
-      var entity_id = mapper[entity.entity_id];
-      var level = Math.round(parseFloat(states[entity_id].state));
-      var muted = entity.attributes.is_volume_muted;
-      if (muted) {
-        return 'muted';
-      }
-      return (level ? level : '0') + ' dB';
+    label: >
+      [[[
+        var mapper = {
+          "switch.zone_1":"input_number.yamaha_receiver",
+          "switch.zone_2":"input_number.yamaha_receiver_zone_2"
+        };
+        var entity_id = mapper[entity.entity_id];
+        var level = Math.round(parseFloat(states[entity_id].state));
+        var muted = entity.attributes.is_volume_muted;
+        if (muted) {
+          return 'muted';
+        }
+        return (level ? level : '0') + ' dB';
+      ]]]
 
   # 4 BUTTONS PER ROW BASE
 
@@ -774,15 +758,17 @@ anchors:
 
   cb_remote_zone_control: &cb_remote_zone_control
     <<: *cb_remote_icon_label
-    label_template: >
-      var control = states['input_select.yamaha_volume_control'].state;
-      if (control === 'all') {
-        var ret = 'all zones';
-      } else {
-        var zone = parseInt(control, 0);
-        var ret = (zone === 0 ? 'off' : 'zone '+zone.toString());
-      }
-      return ret;
+    label: >
+      [[[
+        var control = states['input_select.yamaha_volume_control'].state;
+        if (control === 'all') {
+          var ret = 'all zones';
+        } else {
+          var zone = parseInt(control, 0);
+          var ret = (zone === 0 ? 'off' : 'zone '+zone.toString());
+        }
+        return ret;
+      ]]]
 
   # 4 BUTTONS PER ROW - ACTIVE - HARMONY SERVICE
 
@@ -1021,20 +1007,24 @@ anchors:
     show_name: true
     show_label: true
     icon: mdi:music-note
-    label_template: >
-      var playing = states['media_player.living_room_dot'].state === 'playing';
-      if (playing) {
-        var title = states['media_player.living_room_dot'].attributes.media_title;
-        return `Title: ${title}`;
-      }
-      return `Title: `;
-    name_template: >
-      var playing = states['media_player.living_room_dot'].state === 'playing';
-      if (playing) {
-        var artist = states['media_player.living_room_dot'].attributes.media_artist;
-        return `Artist: ${artist}`;
-      }
-      return `Artist: `;
+    label: >
+      [[[
+        var playing = states['media_player.living_room_dot'].state === 'playing';
+        if (playing) {
+          var title = states['media_player.living_room_dot'].attributes.media_title;
+          return `Title: ${title}`;
+        }
+        return `Title: `;
+      ]]]
+    name: >
+      [[[
+        var playing = states['media_player.living_room_dot'].state === 'playing';
+        if (playing) {
+          var artist = states['media_player.living_room_dot'].attributes.media_artist;
+          return `Artist: ${artist}`;
+        }
+        return `Artist: `;
+      ]]]
 
     styles:
       grid:
@@ -1231,14 +1221,16 @@ anchors:
     show_state: false
     show_name: false
     show_label: true
-    label_template: >
-      var res = Math.floor(parseFloat(entity.state));
-      var hours = Math.floor(res / 60);
-      if (hours > 0) {
-        var minutes = res - (hours * 60);
-        return hours + 'hr ' + minutes + 'min';
-      }
-      return res + 'min';
+    label: >
+      [[[
+        var res = Math.floor(parseFloat(entity.state));
+        var hours = Math.floor(res / 60);
+        if (hours > 0) {
+          var minutes = res - (hours * 60);
+          return hours + 'hr ' + minutes + 'min';
+        }
+        return res + 'min';
+      ]]]
     styles:
       card:
         - height: 40px
@@ -1254,32 +1246,7 @@ anchors:
         - padding: 0px 10px
         - color: var(--paper-item-icon-active-color)
         - font-size: 14px
-            
-  #########################
-  # LOVELACE BUTTON-CARDS #
-  #########################
-  
-  alexa_button: &alexa_button
-    type: entity-button
-    icon: mdi:amazon-alexa
-    hold_action:
-      action: none
-      
-  remote_button: &buttonremote
-    type: entity-button
-    show_name: false
-    tap_action:
-      action: toggle
-    hold_action:
-      action: none
-    
-  named_button: &buttonlight
-    type: entity-button
-    tap_action:
-      action: toggle
-    hold_action:
-      action: more-info
-    
+
   ######################
   # CUSTOM MINI-GRAPHS #
   ######################
@@ -1405,36 +1372,6 @@ anchors:
         color: "#e45e65"
       - value: 130
         color: "#3498db"
-
-  # Bar indicator
-
-  bar_indicator: &bar_indicator
-    type: custom:bar-card
-    title_position: inside
-    show_icon: true
-    show_value: false
-    align: split
-    columns: 1
-    max: 1
-    severity:
-      - value: 1
-        color: "#3498db"
-      - value: 0
-        color: "#e45e65"
-
-  # Bar label.
-
-  bar_label: &bar_label
-    type: custom:bar-card
-    title_position: inside
-    align: split
-    padding: 5px
-    max: 60
-
-  ##################
-  # CIRCLE SENSORS #
-  ##################
-
 
   ##################
   # HARMONY DEVICE #
@@ -3597,13 +3534,10 @@ views:
   # TESTING #
   ###########
 
-  - id: testing
-    icon: mdi:test-tube
-    title: Testing
-    cards:
-      - type: entities
-        entities: 
-          - media_player.living_room_dot
-        <<: *card_mod_transparent_title
-            
-    
+  # - id: testing
+    # icon: mdi:test-tube
+    # title: Testing
+    # cards:
+      # - type: entities
+        # entities: 
+          # - media_player.living_room_dot
