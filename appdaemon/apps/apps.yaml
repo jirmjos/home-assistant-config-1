@@ -86,6 +86,9 @@ extendlighttoggle:
     - entity: switch.office_switch
       entities:
         - switch.office_outlet
+    - entity: switch.basement_stairs
+      entities:
+        - switch.basement_cans
 
 sunsetlights:
   module: sunset_lights

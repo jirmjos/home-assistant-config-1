@@ -17,8 +17,8 @@
     source_names:
       HDMI1: "Xbox One"
       HDMI2: "Playstation 4"
-      HDMI3: "Wii U"
-      HDMI4: "PC"
+      HDMI3: "Empty"
+      HDMI4: "Roku"
       HDMI5: "Switch"
       AUDIO1: "Phone"
       AUDIO2: "Echo"

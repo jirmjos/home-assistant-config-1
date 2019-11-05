@@ -23,7 +23,7 @@ resources:
     type: module
   - url: /local/community/decluttering-card/decluttering-card.js?
     type: module
-    
+
 # ANCHORS
     
 anchors:
@@ -178,54 +178,6 @@ anchors:
     styles:
       card:
         - width: 6px
-
-  # 105 x ? GLOW - PERSON INFO
-
-  cb_overview_persons: &cb_overview_persons
-    type: custom:button-card
-    color: auto
-    layout: name_label
-    show_state: true
-    show_name: true
-    show_label: true
-    show_entity_picture: true
-    styles:
-      grid:
-        - grid-template-rows: auto auto auto
-        - grid-template-columns: auto auto
-      entity_picture:
-        - width: 100%
-        - padding-bottom: 0%
-      card:
-        - border-radius: 15px
-        - margin: 8px 0px 0px 0px
-        - padding: 0px
-      name:
-        - justify-self: start
-        - align-self: start
-        - padding: 9px 10px
-        - font-size: 15px
-        - font-weight: bold
-        - color: white
-        - text-shadow: 0.25px 0.25px 1px black, -0.25px -0.25px 1px black, -0.25px 0.25px 1px black, 0.25px -0.25px 1px black
-      label:
-        - font-size: 11px
-        - font-family: Helvetica
-        - text-transform: capitalize
-        - font-weight: bold
-        - align-self: end
-        - justify-self: start
-        - padding: 9px 10px
-      state:
-        - font-size: 11px
-        - font-family: Helvetica
-        - text-transform: capitalize
-        - font-weight: bold
-        - align-self: end
-        - justify-self: start
-        - padding: 9px 10px
-      lock:
-        - align-items: flex-end
         
   # 3 BUTTONS PER ROW - THEME - OVERVIEW COUNTER
 
@@ -524,8 +476,30 @@ anchors:
         - width: 35px
     tap_action:
       action: toggle
-      
+
   # 5 BUTTONS PER ROW - USER SET - IMAGE
+      
+  cb_remote_image_only: &cb_remote_image_only
+    type: "custom:button-card"
+    aspect_ratio: 1/1
+    show_state: false
+    show_name: false
+    show_label: false
+    show_icon: false
+    show_entity_picture: true
+    styles:
+      card:
+        - border-radius: 15px
+        - margin: 5px 5px 0px 0px
+      entity_picture:
+        - height: 100%
+        - width: 100%
+    tap_action:
+      action: toggle
+    
+  # 4 BUTTONS PER ROW - GRID AND NAME STYLES
+
+  # 4 BUTTONS PER ROW - USER SET - IMAGE AND NAME
       
   cb_remote_image_name: &cb_remote_image_name
     type: "custom:button-card"
@@ -1389,7 +1363,57 @@ anchors:
     device: 41644725
   harmony_computer: &harmony_computer
     device: 41644728
-      
+  harmony_roku: &harmony_roku
+    device: 65884051
+
+# DECLUTTERING TEMPLATES
+decluttering_templates:
+  
+  ##########################
+  # DECLUTTERING BAR CARDS #
+  ##########################
+
+  button_card_person:
+    card:
+      type: custom:button-card
+      color: auto
+      layout: name_label
+      entity: '[[entity]]'
+      show_state: true
+      show_name: false
+      # Band aid to get button size to match image size.
+      show_entity_picture: true
+      entity_picture: /local/images/petro_large.png
+      styles:
+        grid:
+          - grid-template-rows: auto auto auto
+          - grid-template-columns: auto auto
+        card:
+          - background-image: 'url("[[image_home]]")'
+          - background-repeat: no-repeat
+          - background-size: 100% 100%
+          - border-radius: 15px
+          - margin: 8px 0px 0px 0px
+          - padding: 0px
+        entity_picture:
+          - width: 100%
+          - padding-bottom: 0%
+          - opacity: 0.0
+        state:
+          - font-size: 15px
+          - font-family: Helvetica
+          - text-transform: capitalize
+          - font-weight: bold
+          - align-self: end
+          - justify-self: start
+          - padding: 9px 10px
+          - text-shadow: 0.25px 0.25px 1px black, -0.25px -0.25px 1px black, -0.25px 0.25px 1px black, 0.25px -0.25px 1px black
+      state:
+        - value: 'home'
+          operator: '!='
+          styles:
+            card:
+              - background-image: 'url("[[image_away]]")'
 #########
 # VIEWS #
 #########
@@ -1415,20 +1439,18 @@ views:
           - type: horizontal-stack
             cards:
               - <<: *cb_spacer_10px
-              - <<: *cb_overview_persons
-                entity: device_tracker.petro
-                entity_picture: /local/images/petro_large.png
-                state:
-                  - value: 'home'
-                    operator: '!='
-                    entity_picture: /local/images/petro_large_grayscale.png
-              - <<: *cb_overview_persons
-                entity: device_tracker.lambo
-                entity_picture: /local/images/lambo_large.png
-                state:
-                  - value: 'home'
-                    operator: '!='
-                    entity_picture: /local/images/lambo_large_grayscale.png
+              - type: custom:decluttering-card
+                template: button_card_person
+                variables:
+                  - entity: device_tracker.petro
+                  - image_home: /local/images/petro_large.png
+                  - image_away: /local/images/petro_large_grayscale.png
+              - type: custom:decluttering-card
+                template: button_card_person
+                variables:
+                  - entity: device_tracker.lambo
+                  - image_home: /local/images/lambo_large.png
+                  - image_away: /local/images/lambo_large_grayscale.png
               - <<: *cb_spacer_10px
 
           # Overview Lights
@@ -1650,7 +1672,6 @@ views:
           # HARMONY ACTIVITY ON OFF CONTROLS #
           ####################################
 
-                  
           - type: horizontal-stack
             cards:
               - <<: *cb_spacer_10px
@@ -1681,18 +1702,18 @@ views:
                       icon:
                         - color: rgba(102, 92, 190)
 
-              # Wii U Activity On Off
+              # Roku Activity On Off
 
-              - <<: *cb_remote_icon_only
-                entity: switch.wii_u
+              - <<: *cb_remote_image_only
+                entity: switch.roku
+                entity_picture: /local/images/roku off.png
                 state:
                   - value: "on"
+                    entity_picture: /local/images/roku.png
                     styles:
                       card:
                         - --paper-card-background-color: rgba(40, 40, 40)
-                        - box-shadow: 0px 0px 10px 3px rgba(0, 150, 200)
-                      icon:
-                        - color: rgba(0, 150, 200)
+                        - box-shadow: 0px 0px 10px 3px rgba(105, 58, 147)
 
               # Nintendo Switch Activity On Off
 
@@ -1719,7 +1740,77 @@ views:
                         - box-shadow: 0px 0px 10px 3px var(--paper-item-icon-active-color)
 
               - <<: *cb_spacer_10px
+
+          ########################
+          # ROKU SOURCE CONTROLS #
+          ########################
+          
+          - type: conditional
+            conditions:
+              - entity: switch.roku
+                state: 'on'
+            card:
+              type: vertical-stack
+              cards:
+                - type: horizontal-stack
+                  cards:
+                    - <<: *cb_spacer_10px
+                    
+                    # Netflix
+                      
+                    - <<: *cb_remote_image_only
+                      entity: switch.netflix
+                      entity_picture: /local/images/netflix off.png
+                      state:
+                        - value: "on"
+                          entity_picture: /local/images/netflix.png
+                          styles:
+                            card:
+                              - --paper-card-background-color: rgba(40, 40, 40)
+                              - box-shadow: 0px 0px 10px 3px rgba(216, 31, 38)
                         
+                    # HBO Now
+                      
+                    - <<: *cb_remote_image_only
+                      entity: switch.hbo_now
+                      entity_picture: /local/images/hbo now off.png
+                      state:
+                        - value: "on"
+                          entity_picture: /local/images/hbo now.png
+                          styles:
+                            card:
+                              - --paper-card-background-color: rgba(40, 40, 40)
+                              - box-shadow: 0px 0px 10px 3px rgba(255, 255, 255)
+                        
+                    # Hulu
+                      
+                    - <<: *cb_remote_image_only
+                      entity: switch.hulu
+                      entity_picture: /local/images/hulu off.png
+                      state:
+                        - value: "on"
+                          entity_picture: /local/images/hulu.png
+                          styles:
+                            card:
+                              - --paper-card-background-color: rgba(40, 40, 40)
+                              - box-shadow: 0px 0px 10px 3px rgba(28, 231, 131)
+                        
+                    # Prime Video
+                      
+                    - <<: *cb_remote_image_only
+                      entity: switch.prime_video
+                      entity_picture: /local/images/prime video off.png
+                      state:
+                        - value: "on"
+                          entity_picture: /local/images/prime video.png
+                          styles:
+                            card:
+                              - --paper-card-background-color: rgba(40, 40, 40)
+                              - box-shadow: 0px 0px 10px 3px rgba(0, 168, 225)
+
+                    - <<: *cb_spacer_square
+                    - <<: *cb_spacer_10px
+
           ###########################
           # CONTEXT VOLUME CONTROLS #
           ###########################
@@ -2321,6 +2412,211 @@ views:
 
                           - <<: *cb_spacer_10px
 
+                ################
+                # ROKU BUTTONS #
+                ################
+                
+                - type: conditional
+                  conditions:
+                    - entity: switch.roku
+                      state: 'on'
+                    - entity: switch.roku_source
+                      state: 'on'
+                  card:
+                    type: vertical-stack
+                    cards:
+
+                      # ROKU ROW 1 Rewind, Play, Pause, FastForward
+
+                      - type: horizontal-stack
+                        cards:
+                          - <<: *cb_spacer_10px
+
+                          # REWIND BUTTON
+
+                          - <<: *cb_remote_harmony_command
+                            name: Rewind
+                            icon: mdi:rewind
+                            tap_action:
+                              action: call-service
+                              service: remote.send_command
+                              service_data:
+                                <<: *harmony_roku
+                                command: "Rewind"
+
+                          # PLAY BUTTON
+
+                          - <<: *cb_remote_harmony_command
+                            name: Play
+                            icon: mdi:play
+                            tap_action:
+                              action: call-service
+                              service: remote.send_command
+                              service_data:
+                                <<: *harmony_roku
+                                command: "Play"
+
+                          # PAUSE BUTTON
+
+                          - <<: *cb_remote_harmony_command
+                            name: Pause
+                            icon: mdi:pause
+                            tap_action:
+                              action: call-service
+                              service: remote.send_command
+                              service_data:
+                                <<: *harmony_roku
+                                command: "Pause"
+
+                          # FASFORWARD BUTTON
+
+                          - <<: *cb_remote_harmony_command
+                            name: Forward
+                            icon: mdi:fast-forward
+                            tap_action:
+                              action: call-service
+                              service: remote.send_command
+                              service_data:
+                                <<: *harmony_roku
+                                command: "FastForward"
+
+                          - <<: *cb_spacer_10px
+
+                      # ROKU ROW 2 Home, Up, Options
+
+                      - type: horizontal-stack
+                        cards:
+                          - <<: *cb_spacer_10px
+                          - <<: *cb_spacer_square
+
+                          # HOME BUTTON
+
+                          - <<: *cb_remote_harmony_command
+                            name: Home
+                            icon: mdi:home
+                            tap_action:
+                              action: call-service
+                              service: remote.send_command
+                              service_data:
+                                <<: *harmony_roku
+                                command: "Home"
+
+                          # UP BUTTON
+
+                          - <<: *cb_remote_harmony_command
+                            name: Up
+                            icon: mdi:arrow-up-bold
+                            tap_action:
+                              action: call-service
+                              service: remote.send_command
+                              service_data:
+                                <<: *harmony_roku
+                                command: "DirectionUp"
+
+                          # OPTIONS BUTTON
+
+                          - <<: *cb_remote_harmony_command
+                            name: Options
+                            icon: mdi:menu
+                            tap_action:
+                              action: call-service
+                              service: remote.send_command
+                              service_data:
+                                <<: *harmony_roku
+                                command: "Options*"
+
+                          - <<: *cb_spacer_10px
+
+                      # ROKU ROW 3 Left, Ok, Right
+
+                      - type: horizontal-stack
+                        cards:
+                          - <<: *cb_spacer_10px
+                          - <<: *cb_spacer_square
+
+                          # LEFT BUTTON
+
+                          - <<: *cb_remote_harmony_command
+                            name: Left
+                            icon: mdi:arrow-left-bold
+                            tap_action:
+                              action: call-service
+                              service: remote.send_command
+                              service_data:
+                                <<: *harmony_roku
+                                command: "DirectionLeft"
+
+                          # OK BUTTON
+
+                          - <<: *cb_remote_name_as_icon
+                            name: OK
+                            label: Confirm
+                            tap_action:
+                              action: call-service
+                              service: remote.send_command
+                              service_data:
+                                <<: *harmony_roku
+                                command: "OK"
+
+                          # RIGHT BUTTON
+
+                          - <<: *cb_remote_harmony_command
+                            name: Right
+                            icon: mdi:arrow-right-bold
+                            tap_action:
+                              action: call-service
+                              service: remote.send_command
+                              service_data:
+                                <<: *harmony_roku
+                                command: "DirectionRight"
+
+                          - <<: *cb_spacer_10px
+
+                      # ROKU ROW 4 Info, Down, Share
+
+                      - type: horizontal-stack
+                        cards:
+                          - <<: *cb_spacer_10px
+                          - <<: *cb_spacer_square
+
+                          # INFO BUTTON
+
+                          - <<: *cb_remote_harmony_command
+                            name: Search
+                            icon: mdi:movie-search
+                            tap_action:
+                              action: call-service
+                              service: remote.send_command
+                              service_data:
+                                <<: *harmony_roku
+                                command: "Search"
+
+                          # DOWN BUTTON
+
+                          - <<: *cb_remote_harmony_command
+                            name: Down
+                            icon: mdi:arrow-down-bold
+                            tap_action:
+                              action: call-service
+                              service: remote.send_command
+                              service_data:
+                                <<: *harmony_roku
+                                command: "DirectionDown"
+
+                          # SHARE BUTTON
+
+                          - <<: *cb_remote_harmony_command
+                            name: Exit
+                            icon: mdi:exit-to-app
+                            tap_action:
+                              action: call-service
+                              service: remote.send_command
+                              service_data:
+                                <<: *harmony_roku
+                                command: "Exit"
+
+                          - <<: *cb_spacer_10px
+
           ##########################
           # ALEXA CONTEXT CONTROLS #
           ##########################
@@ -2435,7 +2731,7 @@ views:
               type: vertical-stack
               cards:
                 - type: markdown
-                  content: "#### Source"
+                  content: "#### Reciever Source"
                   <<: *card_mod_transparent_title
                 - type: horizontal-stack
                   cards:
@@ -2460,16 +2756,16 @@ views:
                               - box-shadow: 0px 0px 10px 3px rgba(102, 92, 190)
                             icon:
                               - color: rgba(102, 92, 190)
-                    - <<: *cb_remote_icon_only
-                      entity: switch.wii_u_source
+                    - <<: *cb_remote_image_only
+                      entity: switch.roku_source
+                      entity_picture: /local/images/roku off.png
                       state:
                         - value: "on"
+                          entity_picture: /local/images/roku.png
                           styles:
                             card:
                               - --paper-card-background-color: rgba(40, 40, 40)
-                              - box-shadow: 0px 0px 10px 3px rgba(0, 150, 200)
-                            icon:
-                              - color: rgba(0, 150, 200)
+                              - box-shadow: 0px 0px 10px 3px rgba(105, 58, 147)
                     - <<: *cb_remote_icon_only
                       entity: switch.nintendo_switch_source
                       state:
@@ -2481,36 +2777,15 @@ views:
                             icon:
                               - color: rgba(228, 0, 15)
                     - <<: *cb_remote_icon_only
-                      entity: switch.phone_source
-                      state:
-                        - value: "on"
-                          styles:
-                            card:
-                              - --paper-card-background-color: rgba(40, 40, 40)
-                              - box-shadow: 0px 0px 10px 3px var(--paper-item-icon-active-color)
-                    - <<: *cb_spacer_10px
-                - type: horizontal-stack
-                  cards:
-                    - <<: *cb_spacer_10px
-                    - <<: *cb_remote_icon_only
-                      entity: switch.pc_source
-                      state:
-                        - value: "on"
-                          styles:
-                            card:
-                              - --paper-card-background-color: rgba(40, 40, 40)
-                              - box-shadow: 0px 0px 10px 3px var(--paper-item-icon-active-color)
-                    - <<: *cb_remote_icon_only
                       entity: switch.alexa_source
                       state:
                         - value: "on"
                           styles:
                             card:
                               - --paper-card-background-color: rgba(40, 40, 40)
-                              - box-shadow: 0px 0px 10px 3px var(--paper-item-icon-active-color)
-                    - <<: *cb_spacer_square
-                    - <<: *cb_spacer_square
-                    - <<: *cb_spacer_square
+                              - box-shadow: 0px 0px 10px 3px rgba(49, 196, 243)
+                            icon:
+                              - color: rgba(49, 196, 243)
                     - <<: *cb_spacer_10px
 
                       
@@ -3433,7 +3708,7 @@ views:
                 name: James's
                 label: iPhone 8
               - <<: *cb_4x_network
-                entity: device_tracker.james_iphone10
+                entity: device_tracker.james_iphone_10
                 name: James's
                 label: iPhone 10
               - <<: *cb_4x_network

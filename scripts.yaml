@@ -50,3 +50,50 @@ clear_alexa_text:
         value: ""
     - delay:
         seconds: 1
+        
+roku:
+  sequence:
+    - condition: template
+      value_template: "{{ is_state('switch.roku', 'off') }}"
+    - service: switch.turn_on
+      entity_id: switch.roku
+
+turn_off_audio_1:
+  sequence:
+    - condition: template
+      value_template: "{{ is_state('media_player.yamaha_receiver', 'on') and is_state('switch.poweroff', 'off') }}"
+    - service: media_player.turn_off
+      entity_id: media_player.yamaha_receiver
+
+echo_outlet_power:
+  sequence:
+    - condition: template
+      value_template: "{{ not is_state('switch.floating_outlet_switch', power) }}"
+    - service_template: "switch.turn_{{ power }}"
+      entity_id: switch.floating_outlet_switch
+
+yamaha_set_volume:
+  sequence:
+    - condition: template
+      value_template: "{{ not is_state_attr(media_player, 'volume_level', volume) }}"
+    - service: media_player.volume_set
+      data_template:
+        entity_id: "{{ media_player }}"
+        volume_level: "{{ volume }}"
+
+yamaha_select_source:
+  sequence:
+    - condition: template
+      value_template: "{{ not is_state_attr(media_player, 'source', source) }}"
+    - service: media_player.select_source
+      data_template:
+        entity_id: "{{ media_player }}"
+        source: "{{ source }}"
+
+yamaha_power:
+  sequence:
+    - condition: template
+      value_template: "{{ not is_state(media_player, power) }}"
+    - service_template: "media_player.turn_{{ power }}"
+      data_template:
+        entity_id: "{{ media_player }}"

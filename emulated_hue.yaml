@@ -14,8 +14,8 @@
     switch.audio_2:
       name: Audio Two
       hidden: false
-    switch.pc:
-      name: Computer
+    switch.roku:
+      name: Roku
       hidden: false
     switch.ps4:
       name: Playstation
@@ -25,9 +25,6 @@
       hidden: false
     switch.tv:
       name: TV
-      hidden: false
-    switch.wii_u:
-      name: Wii U
       hidden: false
     switch.xbox_one:
       name: Xbox One
@@ -143,6 +140,6 @@
     switch.living_room_window:
       name: Living Room Outlet
       hidden: false
-    swtich.office_window:
+    switch.office_window:
       name: Office Outlet
       hidden: false
