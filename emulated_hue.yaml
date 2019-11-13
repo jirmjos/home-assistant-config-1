@@ -89,9 +89,6 @@
     switch.sconces_garage:
       name: Garage Sconces
       hidden: false
-    switch.kitchen_holiday:
-      name: Holiday Lights
-      hidden: false
     switch.dining_room_hutch:
       name: Hutch Lights
       hidden: false
@@ -133,6 +130,9 @@
       hidden: false
     switch.petro_awake_sleep_automation:
       name: Petros Automation
+      hidden: false
+    switch.passenger_sconce:
+      name: Passenger Sconce
       hidden: false
     switch.upstairs:
       name: Upstairs

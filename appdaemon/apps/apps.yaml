@@ -47,7 +47,6 @@ holidaylights:
       entities:
         - switch.office_window
         - switch.living_room_window
-        #- switch.kitchen_holiday
 
 doorsensors:
   module: doorsensors

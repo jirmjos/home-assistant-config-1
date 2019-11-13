@@ -7,7 +7,7 @@ resources:
     type: js
   - url: /local/community/vertical-stack-in-card/vertical-stack-in-card.js?
     type: js
-  - url: /local/card-tools/card-tools.js?
+  - url: /local/community/lovelace-card-tools/card-tools.js?
     type: js
   - url: /local/community/config-template-card/config-template-card.js
     type: module
@@ -16,8 +16,6 @@ resources:
   - url: /local/community/mini-graph-card/mini-graph-card.js?
     type: module
   - url: /local/community/bar-card/bar-card.js?
-    type: js
-  - url: /local/lovelace/card-loader.js?
     type: js
   - url: /local/community/lovelace-card-mod/card-mod.js?
     type: module
@@ -1551,58 +1549,53 @@ views:
             entities:
               - type: custom:text-input-row
                 entity: input_text.alexa_say
-              - type: custom:card-loader
-                wait:
-                  - button-card
-                  - vertical-stack-in-card
-                card:
-                  type: vertical-stack
+              - type: custom:hui-vertical-stack-card
+                cards:
+                - type: horizontal-stack
                   cards:
-                  - type: horizontal-stack
-                    cards:
-                      - <<: *cb_spacer
+                    - <<: *cb_spacer
 
-                      # ALL BUTTON
+                    # ALL BUTTON
 
-                      - <<: *cb_remote_run_script_small
-                        name: All
-                        icon: mdi:amazon-alexa
-                        entity: script.alexa_say_all
-                        tap_action:
-                          action: call-service
-                          service: script.alexa_say_all
+                    - <<: *cb_remote_run_script_small
+                      name: All
+                      icon: mdi:amazon-alexa
+                      entity: script.alexa_say_all
+                      tap_action:
+                        action: call-service
+                        service: script.alexa_say_all
 
-                      # LIVING ROOM ALEXA BUTTON
+                    # LIVING ROOM ALEXA BUTTON
 
-                      - <<: *cb_remote_run_script_small
-                        name: Kitchen
-                        icon: mdi:amazon-alexa
-                        entity: script.alexa_say_living_room
-                        tap_action:
-                          action: call-service
-                          service: script.alexa_say_living_room
+                    - <<: *cb_remote_run_script_small
+                      name: Kitchen
+                      icon: mdi:amazon-alexa
+                      entity: script.alexa_say_living_room
+                      tap_action:
+                        action: call-service
+                        service: script.alexa_say_living_room
 
-                      # MASTER ALEXA BUTTON
+                    # MASTER ALEXA BUTTON
 
-                      - <<: *cb_remote_run_script_small
-                        name: Master
-                        icon: mdi:amazon-alexa
-                        entity: script.alexa_say_master
-                        tap_action:
-                          action: call-service
-                          service: script.alexa_say_master
+                    - <<: *cb_remote_run_script_small
+                      name: Master
+                      icon: mdi:amazon-alexa
+                      entity: script.alexa_say_master
+                      tap_action:
+                        action: call-service
+                        service: script.alexa_say_master
 
-                      # CLEAR TEXT ALEXA BUTTON
+                    # CLEAR TEXT ALEXA BUTTON
 
-                      - <<: *cb_remote_run_script_small
-                        name: Clear
-                        icon: mdi:close
-                        entity: script.clear_alexa_text
-                        tap_action:
-                          action: call-service
-                          service: script.clear_alexa_text
+                    - <<: *cb_remote_run_script_small
+                      name: Clear
+                      icon: mdi:close
+                      entity: script.clear_alexa_text
+                      tap_action:
+                        action: call-service
+                        service: script.clear_alexa_text
 
-                      - <<: *cb_spacer
+                    - <<: *cb_spacer
 
           - type: horizontal-stack
             cards:
@@ -1632,12 +1625,7 @@ views:
     title: Entertainment
     cards:
     
-      # Had to add card-loader to avoid a persistent exception when reloading & clearing cache.
-      - type: custom:card-loader
-        wait:
-          - button-card
-        card:
-          type: vertical-stack
+        - type: vertical-stack
           cards:
 
           #########################
@@ -1794,9 +1782,9 @@ views:
                             card:
                               - --paper-card-background-color: rgba(40, 40, 40)
                               - box-shadow: 0px 0px 10px 3px rgba(28, 231, 131)
-                        
+
                     # Prime Video
-                      
+
                     - <<: *cb_remote_image_only
                       entity: switch.prime_video
                       entity_picture: /local/images/prime video off.png
@@ -1808,7 +1796,19 @@ views:
                               - --paper-card-background-color: rgba(40, 40, 40)
                               - box-shadow: 0px 0px 10px 3px rgba(0, 168, 225)
 
-                    - <<: *cb_spacer_square
+                    # Disney Plus
+
+                    - <<: *cb_remote_image_only
+                      entity: switch.disney_plus
+                      entity_picture: /local/images/disney_plus_off.png
+                      state:
+                        - value: "on"
+                          entity_picture: /local/images/disney_plus.png
+                          styles:
+                            card:
+                              - --paper-card-background-color: rgba(40, 40, 40)
+                              - box-shadow: 0px 0px 10px 3px rgba(8, 213, 238)
+
                     - <<: *cb_spacer_10px
 
           ###########################
@@ -2977,10 +2977,7 @@ views:
               - <<: *cb_3x_glow_no_label
                 name: Stove
                 entity: switch.kitchen_cabinet
-              - <<: *cb_3x_glow_no_label
-                lock: true
-                name: Outlet
-                entity: switch.kitchen_holiday
+              - <<: *cb_spacer_square
               - <<: *cb_spacer_10px
                 
       ########################
@@ -3120,9 +3117,12 @@ views:
             cards:
               - <<: *cb_spacer_10px
               - <<: *cb_3x_glow_no_label
+                name: Passenger
+                entity: switch.passenger_sconce
+                lock: true
+              - <<: *cb_3x_glow_no_label
                 name: Outlet
                 entity: switch.outside_porch
-              - <<: *cb_spacer_square
               - <<: *cb_spacer_square
               - <<: *cb_spacer_10px
 
@@ -3145,41 +3145,37 @@ views:
         entities:
           - type: section
             label: Speed Test
-          - type: custom:card-loader
-            wait:
-              - mini-graph-card
-            card:
-              type: vertical-stack
+          - type: custom:hui-vertical-stack-card
+            cards:
+            - type: horizontal-stack
               cards:
-              - type: horizontal-stack
-                cards:
-                  - <<: *mg_168h_1pph
-                    <<: *card_mod_bordered_style
-                    entities: 
-                      - sensor.speedtest_download
-                    color_thresholds:
-                      - value: 99.9
-                        color: "#3498db"
-                      - value: 0
-                        color: "#E45E65"
-                  - <<: *mg_168h_1pph
-                    <<: *card_mod_bordered_style
-                    entities: 
-                      - sensor.speedtest_upload
-                    color_thresholds:
-                      - value: 9.9
-                        color: "#3498db"
-                      - value: 0
-                        color: "#E45E65"
-              - <<: *mg_168h_1pph
-                <<: *card_mod_bordered_style
-                entities: 
-                  - sensor.speedtest_ping
-                color_thresholds:
-                  - value: 80
-                    color: "#E45E65"
-                  - value: 0
-                    color: "#3498db"
+                - <<: *mg_168h_1pph
+                  <<: *card_mod_bordered_style
+                  entities: 
+                    - sensor.speedtest_download
+                  color_thresholds:
+                    - value: 99.9
+                      color: "#3498db"
+                    - value: 0
+                      color: "#E45E65"
+                - <<: *mg_168h_1pph
+                  <<: *card_mod_bordered_style
+                  entities: 
+                    - sensor.speedtest_upload
+                  color_thresholds:
+                    - value: 9.9
+                      color: "#3498db"
+                    - value: 0
+                      color: "#E45E65"
+            - <<: *mg_168h_1pph
+              <<: *card_mod_bordered_style
+              entities: 
+                - sensor.speedtest_ping
+              color_thresholds:
+                - value: 80
+                  color: "#E45E65"
+                - value: 0
+                  color: "#3498db"
 
       ##################################
       # HOME ASSISTANT HARDWARE STATUS #
@@ -3201,47 +3197,43 @@ views:
           entities:
             - type: section
               label: "${ 'NUC i5 --- Ubuntu 18.04.1 LTS --- HA ' + vars[0] }"
-            - type: custom:card-loader
-              wait:
-                - mini-graph-card
-              card:
-                type: vertical-stack
-                cards:
-                  - type: horizontal-stack
-                    cards:
-                      - type: picture
-                        <<: *card_mod_transparent_background
-                        image: /local/images/devices/nuc_5.png
-                      - <<: *cb_uptime
-                        entity: sensor.nuc_uptime
-                        name: Uptime
-                        icon: mdi:clock-outline
-                  - <<: *bar_percent
-                    <<: *card_mod_transparent_background
-                    entity: sensor.disk_use_percent_home
-                    title: "${ 'Disk (' + vars[2] + 'Gb/' + vars[1] + 'Gb)' }"
-                  - type: horizontal-stack
-                    cards:
-                      - <<: *bar_percent
-                        <<: *card_mod_transparent_background
-                        entity: sensor.memory_use_percent
-                        title: RAM
-                      - <<: *bar_percent
-                        <<: *card_mod_transparent_background
-                        entity: sensor.processor_use
-                        title: CPU
-                  - <<: *mg_168h_1pph
-                    <<: *card_mod_rounded_transparent
-                    entities: 
-                      - sensor.cpu_temperature
-                    name: Temperature
-                    color_thresholds:
-                      - value: 90
-                        color: "#3498db"
-                      - value: 120
-                        color: "#f39c12"
-                      - value: 150
-                        color: "#E45E65"
+            - type: custom:hui-vertical-stack-card
+              cards:
+                - type: horizontal-stack
+                  cards:
+                    - type: picture
+                      <<: *card_mod_transparent_background
+                      image: /local/images/devices/nuc_5.png
+                    - <<: *cb_uptime
+                      entity: sensor.nuc_uptime
+                      name: Uptime
+                      icon: mdi:clock-outline
+                - <<: *bar_percent
+                  <<: *card_mod_transparent_background
+                  entity: sensor.disk_use_percent_home
+                  title: "${ 'Disk (' + vars[2] + 'Gb/' + vars[1] + 'Gb)' }"
+                - type: horizontal-stack
+                  cards:
+                    - <<: *bar_percent
+                      <<: *card_mod_transparent_background
+                      entity: sensor.memory_use_percent
+                      title: RAM
+                    - <<: *bar_percent
+                      <<: *card_mod_transparent_background
+                      entity: sensor.processor_use
+                      title: CPU
+                - <<: *mg_168h_1pph
+                  <<: *card_mod_rounded_transparent
+                  entities: 
+                    - sensor.cpu_temperature
+                  name: Temperature
+                  color_thresholds:
+                    - value: 90
+                      color: "#3498db"
+                    - value: 120
+                      color: "#f39c12"
+                    - value: 150
+                      color: "#E45E65"
 
       ######################
       # UPS - APC BR1500MS #
@@ -3259,43 +3251,39 @@ views:
           entities:
             - type: section
               label: "${ vars[0] }"
-            - type: custom:card-loader
-              wait:
-                - button-card
-              card:
-                type: vertical-stack
-                cards:
-                  - type: horizontal-stack
-                    cards:
-                      - type: picture
-                        <<: *card_mod_transparent_background
-                        image: /local/images/devices/BR1500G.png
-                      - <<: *cb_uptime
-                        entity: sensor.ups_uptime
-                        name: Uptime
-                        icon: mdi:clock-outline
-                  - type: horizontal-stack
-                    cards:
-                      - <<: *cb_spacer_6px
-                      - <<: *cb_indicator
-                        entity: binary_sensor.ups_online_status
-                      - <<: *cb_minutes_to_hours
-                        entity: sensor.ups_time_left
-                      - <<: *cb_spacer_6px
-                  - <<: *bar_voltage
-                    <<: *card_mod_transparent_background
-                    entity: sensor.ups_input_voltage
-                    title: Input
-                  - type: horizontal-stack
-                    cards:
-                      - <<: *bar_percent
-                        <<: *card_mod_transparent_background
-                        entity: sensor.ups_load
-                        title: Load
-                      - <<: *bar_percent_good
-                        <<: *card_mod_transparent_background
-                        entity: sensor.ups_battery
-                        title: Battery
+            - type: custom:hui-vertical-stack-card
+              cards:
+                - type: horizontal-stack
+                  cards:
+                    - type: picture
+                      <<: *card_mod_transparent_background
+                      image: /local/images/devices/BR1500G.png
+                    - <<: *cb_uptime
+                      entity: sensor.ups_uptime
+                      name: Uptime
+                      icon: mdi:clock-outline
+                - type: horizontal-stack
+                  cards:
+                    - <<: *cb_spacer_6px
+                    - <<: *cb_indicator
+                      entity: binary_sensor.ups_online_status
+                    - <<: *cb_minutes_to_hours
+                      entity: sensor.ups_time_left
+                    - <<: *cb_spacer_6px
+                - <<: *bar_voltage
+                  <<: *card_mod_transparent_background
+                  entity: sensor.ups_input_voltage
+                  title: Input
+                - type: horizontal-stack
+                  cards:
+                    - <<: *bar_percent
+                      <<: *card_mod_transparent_background
+                      entity: sensor.ups_load
+                      title: Load
+                    - <<: *bar_percent_good
+                      <<: *card_mod_transparent_background
+                      entity: sensor.ups_battery
+                      title: Battery
 
       ####################################
       # UNIFI SWITCH 16 PORT POE (150 W) #
@@ -3307,33 +3295,29 @@ views:
         entities:
           - type: section
             label: Bonus Room 16 Port POE Switch
-          - type: custom:card-loader
-            wait:
-              - mini-graph-card
-            card:
-              type: vertical-stack
-              cards:
-                - type: horizontal-stack
-                  cards:
-                    - type: picture
-                      <<: *card_mod_transparent_background
-                      image: /local/images/devices/unifi_16port_switch_2.png
-                    - <<: *cb_uptime
-                      entity: sensor.bonus_room_switch_uptime
-                      name: Uptime
-                      icon: mdi:clock-outline
-                - <<: *mg_168h_1pph
-                  <<: *card_mod_rounded_transparent
-                  entities: 
-                    - sensor.bonus_room_switch_temperature
-                  name: Temperature
-                  color_thresholds:
-                    - value: 90
-                      color: "#3498db"
-                    - value: 120
-                      color: "#f39c12"
-                    - value: 150
-                      color: "#E45E65"
+          - type: custom:hui-vertical-stack-card
+            cards:
+              - type: horizontal-stack
+                cards:
+                  - type: picture
+                    <<: *card_mod_transparent_background
+                    image: /local/images/devices/unifi_16port_switch_2.png
+                  - <<: *cb_uptime
+                    entity: sensor.bonus_room_switch_uptime
+                    name: Uptime
+                    icon: mdi:clock-outline
+              - <<: *mg_168h_1pph
+                <<: *card_mod_rounded_transparent
+                entities: 
+                  - sensor.bonus_room_switch_temperature
+                name: Temperature
+                color_thresholds:
+                  - value: 90
+                    color: "#3498db"
+                  - value: 120
+                    color: "#f39c12"
+                  - value: 150
+                    color: "#E45E65"
 
       ####################################
       # UNIFI SWITCH 16 PORT POE (150 W) #
@@ -3345,33 +3329,29 @@ views:
         entities:
           - type: section
             label: Server Room 16 Port POE Switch
-          - type: custom:card-loader
-            wait:
-              - mini-graph-card
-            card:
-              type: vertical-stack
-              cards:
-                - type: horizontal-stack
-                  cards:
-                    - type: picture
-                      <<: *card_mod_transparent_background
-                      image: /local/images/devices/unifi_16port_switch_2.png
-                    - <<: *cb_uptime
-                      entity: sensor.server_room_switch_uptime
-                      name: Uptime
-                      icon: mdi:clock-outline
-                - <<: *mg_168h_1pph
-                  <<: *card_mod_rounded_transparent
-                  entities: 
-                    - sensor.server_room_switch_temperature
-                  name: Temperature
-                  color_thresholds:
-                    - value: 90
-                      color: "#3498db"
-                    - value: 120
-                      color: "#f39c12"
-                    - value: 150
-                      color: "#E45E65"
+          - type: custom:hui-vertical-stack-card
+            cards:
+              - type: horizontal-stack
+                cards:
+                  - type: picture
+                    <<: *card_mod_transparent_background
+                    image: /local/images/devices/unifi_16port_switch_2.png
+                  - <<: *cb_uptime
+                    entity: sensor.server_room_switch_uptime
+                    name: Uptime
+                    icon: mdi:clock-outline
+              - <<: *mg_168h_1pph
+                <<: *card_mod_rounded_transparent
+                entities: 
+                  - sensor.server_room_switch_temperature
+                name: Temperature
+                color_thresholds:
+                  - value: 90
+                    color: "#3498db"
+                  - value: 120
+                    color: "#f39c12"
+                  - value: 150
+                    color: "#E45E65"
 
       ###############################
       # SYNOLOGY DISKSTATION DS216J #
@@ -3383,57 +3363,53 @@ views:
         entities:
           - type: section
             label: Synology DS216J
-          - type: custom:card-loader
-            wait:
-              - mini-graph-card
-            card:
-              type: vertical-stack
-              cards:
-                - type: horizontal-stack
-                  cards:
-                    - type: picture
-                      <<: *card_mod_transparent_background
-                      image: /local/images/devices/synology_ds216j_2.png
-                    - <<: *cb_uptime
-                      entity: sensor.synology_uptime
-                      name: Uptime
-                      icon: mdi:clock-outline
-                        
-                - type: custom:config-template-card
-                  variables:
-                    - states['sensor.synology_dsm_total_size_volume_1'].state
-                    - states['sensor.synology_dsm_used_space_volume_1'].state
-                  entities:
-                    - sensor.synology_dsm_total_size_volume_1
-                    - sensor.synology_dsm_used_space_volume_1
-                  card:
-                    <<: *bar_percent
+          - type: custom:hui-vertical-stack-card
+            cards:
+              - type: horizontal-stack
+                cards:
+                  - type: picture
                     <<: *card_mod_transparent_background
-                    entity: sensor.synology_dsm_volume_used_volume_1
-                    title: "${ 'Disk (' + vars[1] + '/' + vars[0] + ')' }"
-                - type: horizontal-stack
-                  cards:
-                    - <<: *bar_percent
-                      <<: *card_mod_transparent_background
-                      entity: sensor.synology_dsm_memory_usage_real
-                      title: RAM
-                    - <<: *bar_percent
-                      <<: *card_mod_transparent_background
-                      entity: sensor.synology_dsm_cpu_load_total
-                      title: CPU
-                - <<: *mg_168h_1pph
-                  <<: *card_mod_rounded_transparent
-                  entities: 
-                    - sensor.synology_dsm_temperature_sda
-                    - sensor.synology_dsm_temperature_sdb
-                  name: Temperature
-                  color_thresholds:
-                    - value: 90
-                      color: "#3498db"
-                    - value: 95
-                      color: "#f39c12"
-                    - value: 100
-                      color: "#E45E65"
+                    image: /local/images/devices/synology_ds216j_2.png
+                  - <<: *cb_uptime
+                    entity: sensor.synology_uptime
+                    name: Uptime
+                    icon: mdi:clock-outline
+                      
+              - type: custom:config-template-card
+                variables:
+                  - states['sensor.synology_dsm_total_size_volume_1'].state
+                  - states['sensor.synology_dsm_used_space_volume_1'].state
+                entities:
+                  - sensor.synology_dsm_total_size_volume_1
+                  - sensor.synology_dsm_used_space_volume_1
+                card:
+                  <<: *bar_percent
+                  <<: *card_mod_transparent_background
+                  entity: sensor.synology_dsm_volume_used_volume_1
+                  title: "${ 'Disk (' + vars[1] + '/' + vars[0] + ')' }"
+              - type: horizontal-stack
+                cards:
+                  - <<: *bar_percent
+                    <<: *card_mod_transparent_background
+                    entity: sensor.synology_dsm_memory_usage_real
+                    title: RAM
+                  - <<: *bar_percent
+                    <<: *card_mod_transparent_background
+                    entity: sensor.synology_dsm_cpu_load_total
+                    title: CPU
+              - <<: *mg_168h_1pph
+                <<: *card_mod_rounded_transparent
+                entities: 
+                  - sensor.synology_dsm_temperature_sda
+                  - sensor.synology_dsm_temperature_sdb
+                name: Temperature
+                color_thresholds:
+                  - value: 90
+                    color: "#3498db"
+                  - value: 95
+                    color: "#f39c12"
+                  - value: 100
+                    color: "#E45E65"
 
       ########################
       # AEOTEC MULTISENSOR 1 #
@@ -3445,34 +3421,30 @@ views:
         entities:
           - type: section
             label: Master Bathroom Aeotec Multisensor 6
-          - type: custom:card-loader
-            wait:
-              - mini-graph-card
-            card:
-              type: vertical-stack
-              cards:
-                - type: horizontal-stack
-                  cards:
-                    - type: picture
-                      <<: *card_mod_transparent_background
-                      image: /local/images/devices/aeotec_multisensor6_2.png
-                    - <<: *mg_inside_temperature
-                      <<: *card_mod_bordered_style
-                      entities: 
-                        - sensor.ms_temperature
-                      name: Temperature
-                - type: horizontal-stack
-                  cards:
-                    - <<: *mg_humidity
-                      <<: *card_mod_bordered_style
-                      entities: 
-                        - sensor.ms_humidity
-                      name: Humidity
-                    - <<: *mg_basic
-                      <<: *card_mod_bordered_style
-                      entities: 
-                        - sensor.ms_luminance
-                      name: Luminance
+          - type: custom:hui-vertical-stack-card
+            cards:
+              - type: horizontal-stack
+                cards:
+                  - type: picture
+                    <<: *card_mod_transparent_background
+                    image: /local/images/devices/aeotec_multisensor6_2.png
+                  - <<: *mg_inside_temperature
+                    <<: *card_mod_bordered_style
+                    entities: 
+                      - sensor.ms_temperature
+                    name: Temperature
+              - type: horizontal-stack
+                cards:
+                  - <<: *mg_humidity
+                    <<: *card_mod_bordered_style
+                    entities: 
+                      - sensor.ms_humidity
+                    name: Humidity
+                  - <<: *mg_basic
+                    <<: *card_mod_bordered_style
+                    entities: 
+                      - sensor.ms_luminance
+                    name: Luminance
 
   ##############
   # VIEW - MAP #

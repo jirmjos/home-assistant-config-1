@@ -205,6 +205,7 @@
     entities:
       - switch.sconces_garage
       - switch.sconces_main_entrance
+      - switch.passenger_sconce
       - switch.outside_porch
       
   upstairs:
@@ -246,6 +247,7 @@
     entities:
       - switch.sconces_garage
       - switch.sconces_main_entrance
+      - switch.passenger_sconce
       
   ###############
   # LIVING ROOM #
@@ -288,7 +290,6 @@
       - light.kitchen_island
       - light.kitchen_cans
       - switch.kitchen_cabinet
-      #- switch.kitchen_holiday
       - switch.kitchen_pantry
       
   #############
@@ -379,7 +380,6 @@
   # christmas_lights:
     # name: Christmas Lights
     # entities:
-      # - switch.kitchen_holiday
       # - switch.floating_outlet_switch
       #- switch.outside_s_switch_8_0
       

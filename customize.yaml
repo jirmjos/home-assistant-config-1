@@ -18,6 +18,9 @@ switch.garage_entry:
 switch.garage_cans:
   friendly_name: Garage Fixtures
   icon: mdi:lightbulb
+switch.passenger_sconce:
+  friendly_name: Passenger Door Sconce
+  icon: mdi:wall-sconce
 switch.sconces_main_entrance:
   friendly_name: Main Sconces
   icon: mdi:wall-sconce
@@ -191,6 +194,9 @@ switch.hulu:
   icon: mdi:hulu
 switch.prime_video:
   friendly_name: Prime Video
+  icon: mdi:amazon
+switch.disney_plus:
+  friendly_name: Disney Plus
   icon: mdi:amazon
 sensor.harmony_activity:
   friendly_name: Harmony Status

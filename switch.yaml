@@ -278,6 +278,25 @@
           turn_off:
             - service: switch.turn_off
               entity_id: switch.roku
+              
+        # Disney Plus
+        disney_plus:
+          value_template: >
+            {{ is_state('switch.roku', 'on') and 
+               is_state_attr('media_player.roku_living_room', 'source', 'Disney Plus') }}
+          turn_on:
+            - service: script.roku
+            - wait_template: "{{ is_state('switch.roku', 'on') }}"
+            - service: media_player.select_source
+              data:
+                entity_id: media_player.roku_living_room
+                source: Disney Plus
+            - wait_template: "{{ is_state_attr('remote.living_room', 'current_activity', 'Roku') }}"
+            - service: switch.turn_off
+              entity_id: switch.echo_through_receiver
+          turn_off:
+            - service: switch.turn_off
+              entity_id: switch.roku
                 
         # AUDIO 1, USED FOR ECHO AND MUSIC ZONE 1
         audio_1:
