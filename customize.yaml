@@ -36,8 +36,11 @@ switch.basement_cans:
 switch.basement_stairs:
   friendly_name: Basement Stairs
   icon: mdi:stairs
-switch.kitchen_holiday:
-  friendly_name: Holiday Lights
+switch.kitchen_outlet_above_microwave:
+  friendly_name: Above Microwave Outlet
+  icon: mdi:power-socket-us
+switch.kitchen_outlet_above_fridge:
+  friendly_name: Above Fridge Outlet
   icon: mdi:power-socket-us
 switch.kitchen_cabinet:
   friendly_name: Cabinet Lights
@@ -256,3 +259,6 @@ sensor.speedtest_upload:
   friendly_name: Upload
 device_tracker.harmony_hub:
   icon: mdi:remote
+binary_sensor.garage_door_tilt:
+  friendly_name: Garage Door
+  device_class: garage_door

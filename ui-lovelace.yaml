@@ -1535,10 +1535,13 @@ views:
                 name: Main
                 secondary_info: last-changed
               - entity: sensor.entry_door_hindge_message
-                name: Garage
+                name: Entry
                 secondary_info: last-changed
               - entity: sensor.sliding_door_message
                 name: Patio
+                secondary_info: last-changed
+              - entity: sensor.garage_door_tilt_message
+                name: Garage
                 secondary_info: last-changed
                   
       - id: alexa_say_card
@@ -2977,6 +2980,17 @@ views:
               - <<: *cb_3x_glow_no_label
                 name: Stove
                 entity: switch.kitchen_cabinet
+              - <<: *cb_3x_glow_no_label
+                name: Fridge Outlet
+                entity: switch.kitchen_outlet_above_fridge
+              - <<: *cb_spacer_10px
+          - type: horizontal-stack
+            cards:
+              - <<: *cb_spacer_10px
+              - <<: *cb_3x_glow_no_label
+                name: Microwave Outlet
+                entity: switch.kitchen_outlet_above_microwave
+              - <<: *cb_spacer_square
               - <<: *cb_spacer_square
               - <<: *cb_spacer_10px
                 

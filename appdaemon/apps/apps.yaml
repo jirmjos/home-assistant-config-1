@@ -1,3 +1,7 @@
+utils:
+  module: utils
+  class: utils
+
 sundownlighttoggle:
   module: sundown_light_toggle
   class: SunDownLightToggle
@@ -47,36 +51,76 @@ holidaylights:
       entities:
         - switch.office_window
         - switch.living_room_window
+        - switch.kitchen_outlet_above_microwave
+        - switch.kitchen_outlet_above_fridge
 
-doorsensors:
-  module: doorsensors
-  class: Doorsensors
-  door_sensors:
-    - entity: sensor.main_door_hindge
-      entities:
-        - switch.foyer
-    - entity: sensor.entry_door_hindge
-      entities:
-        - switch.garage_entry
-        - switch.garage_cans
-    - entity: sensor.sliding_door
-      entities:
-        - light.dining_room_chandelier
-  notify_services:
-    - notify.ios_petro
-    - notify.ios_lambo
-  device_trackers:
-    - device_tracker.owens_iphone
-    - device_tracker.jimpetrnoiphone
-    - device_tracker.mikes_iphone
-    - device_tracker.petro
-    - device_tracker.lindsaysiphone
-    - device_tracker.lambo
-  durations:
-    notify: 15
-    light: 120
-    intruder: 30
+peopletracker:
+  module: peopletracker
+  class: PeopleTracker
   company: input_select.company
+  entities:
+  - device_tracker.owens_iphone
+  - device_tracker.jimpetrnoiphone
+  - person.petro
+  - person.lambo
+
+main_door:
+  module: doors
+  class: DoorHandler
+  sensor_name: Main Door
+  sensor_id: sensor.main_door_hindge
+  turn_on:
+  - switch.foyer
+  turn_on_for: 120
+  notify:
+  - notify.ios_petro
+  - notify.ios_lambo
+  door_open_for: 15
+  suppress_duplicate_window: 90
+  intruder_timeout: 60
+
+garage_entry_door:
+  module: doors
+  class: DoorHandler
+  sensor_name: Garage Entry Door
+  sensor_id: sensor.entry_door_hindge
+  turn_on:
+  - switch.garage_entry
+  - switch.garage_cans
+  turn_on_for: 120
+  notify:
+  - notify.ios_petro
+  - notify.ios_lambo
+  door_open_for: 30
+  suppress_duplicate_window: 90
+  intruder_timeout: 60
+  
+sliding_door:
+  module: doors
+  class: DoorHandler
+  sensor_name: Sliding Door
+  sensor_id: sensor.sliding_door
+  turn_on:
+  - light.dining_room_chandelier
+  turn_on_for: 120
+  notify:
+  - notify.ios_petro
+  - notify.ios_lambo
+  door_open_for: 30
+  suppress_duplicate_window: 90
+  intruder_timeout: 60
+  
+garage_door:
+  module: doors
+  class: DoorHandler
+  sensor_name: Garage Door
+  sensor_id: binary_sensor.garage_door_tilt
+  notify:
+  - notify.ios_petro
+  - notify.ios_lambo
+  door_open_for: 300
+  suppress_duplicate_window: 300
+  intruder_timeout: 60
 
 extendlighttoggle:
   module: extend_light_toggle

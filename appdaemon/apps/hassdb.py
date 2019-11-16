@@ -139,6 +139,8 @@ class extenddict(dict):
     def __getattr__(self, name):
         if name in self:
             return self[name]
+        elif name == 'entities':
+            return []
         else:
             raise AttributeError("'extenddict' object has no attribute '{}'".format(name))
 

@@ -25,6 +25,8 @@
         - light.master_closet
         - light.master_fixture
         - light.master_bathroom_sink
+        - switch.kitchen_outlet_above_microwave
+        - switch.kitchen_outlet_above_fridge
         - switch.basement_cans
         - switch.basement_stairs
         - switch.kitchen_cabinet
@@ -100,6 +102,10 @@
         name: Master Light
       light.master_bathroom_sink:
         name: Master Sink
+      switch.kitchen_outlet_above_microwave:
+        name: Kitchen Outlet Above Microwave
+      switch.kitchen_outlet_above_fridge:
+        name: Kitchen Outlet Above Refrigerator
       switch.basement_cans:
         name: Basement Cans
       switch.basement_stairs:
