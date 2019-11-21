@@ -27,11 +27,16 @@ class OnDiskDatabase(object):
                 return ""
 
 class StateSnapShot(object):
-    def __init__(self, entity_id, state="", **kwargs):
+    def __init__(self, id, entity_id, state="", **kwargs):
+        self._id = id
         self._entity_id = entity_id
         self._state = state
         self._attributes = kwargs.get('attributes', {})
         self.restore = True
+        
+    @property
+    def id(self):
+        return self._id
         
     @property
     def entity_id(self):
@@ -93,22 +98,22 @@ class StateSnapShotManager(object):
     def __init__(self):
         self._database = {}
 
-    def set(self, entity_id, state, **kwargs):
-        self._database[entity_id] = StateSnapShot(entity_id, state, **kwargs)
+    def set(self, id, entity_id, state, **kwargs):
+        self._database[id] = StateSnapShot(id, entity_id, state, **kwargs)
 
-    def pop(self, entity_id):
-        if entity_id in self._database:
-            return self._database.pop(entity_id)
+    def pop(self, id):
+        if id in self._database:
+            return self._database.pop(id)
         return None
         
-    def get(self, entity_id):
-        return self._database.get(entity_id)
+    def get(self, id):
+        return self._database.get(id)
 
-    def __getitem__(self, entity_id):
-        if name in self._database:
-            return self._database[name]
+    def __getitem__(self, id):
+        if id in self._database:
+            return self._database[id]
         else:
-            raise KeyError("'{}'".format(entity_id))
+            raise KeyError("'{}'".format(id))
 
 class utils(hass.Hass):
     def initialize(self):
@@ -122,17 +127,23 @@ class utils(hass.Hass):
     def write(self, entity_id, state):
         self._disk.write(entity_id, state)
 
-    def take_snapshot(self, entity_id):
+    def _snapshot_name(self, app, entity_id):
+        return '.'.join([app, entity_id])
+
+    def take_snapshot(self, app, entity_id):
         kwargs = self.get_state(entity_id, attribute='all')
         state = kwargs.pop('state')
-        self._snapshots.set(entity_id, state, attributes=kwargs)
+        id = self._snapshot_name(app, entity_id)
+        self._snapshots.set(id, entity_id, state, attributes=kwargs)
         return state
 
-    def have_snapshot(self, entity_id):
-        return self._snapshots.get(entity_id) is not None
+    def have_snapshot(self, app, entity_id):
+        id = self._snapshot_name(app, entity_id)
+        return self._snapshots.get(id) is not None
 
-    def get_snapshot(self, entity_id):
-        return self._snapshots.pop(entity_id)
+    def get_snapshot(self, app, entity_id):
+        id = self._snapshot_name(app, entity_id)
+        return self._snapshots.pop(id)
         
     def is_domain(self, entity_id, domain):
         return self.get_domain(entity_id) == domain
