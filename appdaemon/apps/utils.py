@@ -6,8 +6,8 @@ from datetime import timedelta, datetime
 
 STATE_RESTORE = "/config/appdaemon/states"
 INFO = 'INFO'
-DEBUG = 'INFO'
-#DEBUG = 'DEBUG'
+#DEBUG = 'INFO'
+DEBUG = 'DEBUG'
 
 class OnDiskDatabase(object):
     def __init__(self, filename):

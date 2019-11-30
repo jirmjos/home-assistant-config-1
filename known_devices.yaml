@@ -68,14 +68,14 @@
   # track: true
   # vendor: unknown
 
-petro:
-  hide_if_away: false
-  icon: mdi:cellphone-iphone
-  mac: 
-  picture: /local/images/petro.png
-  name: Mike's iPhone
-  track: true
-  vendor:
+# petro:
+  # hide_if_away: false
+  # icon: mdi:cellphone-iphone
+  # mac: 
+  # picture: /local/images/petro.png
+  # name: Mike's iPhone
+  # track: true
+  # vendor:
 
 # nintendo_wii_u:
   # hide_if_away: false
@@ -86,14 +86,14 @@ petro:
   # track: true
   # vendor: Nintendo Co.,Ltd
 
-lambo:
-  hide_if_away: false
-  icon: mdi:cellphone-iphone
-  mac: 
-  picture: /local/images/lindsay.png
-  name: Lindsay's iPhone
-  track: true
-  vendor: unknown
+# lambo:
+  # hide_if_away: false
+  # icon: mdi:cellphone-iphone
+  # mac: 
+  # picture: /local/images/lindsay.png
+  # name: Lindsay's iPhone
+  # track: true
+  # vendor: unknown
 
 # lindsays_work_pc:
   # hide_if_away: false

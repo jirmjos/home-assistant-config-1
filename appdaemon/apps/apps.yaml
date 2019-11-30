@@ -2,6 +2,11 @@ utils:
   module: utils
   class: utils
 
+# events:
+  # module: events
+  # class: EventMonitor
+  # events:
+
 sundownlighttoggle:
   module: sundown_light_toggle
   class: SunDownLightToggle
@@ -92,7 +97,7 @@ garage_entry_door:
   - notify.ios_petro
   - notify.ios_lambo
   door_open_for: 30
-  suppress_duplicate_window: 90
+  suppress_duplicate_window: 120
   intruder_timeout: 60
   
 sliding_door:
@@ -121,6 +126,18 @@ garage_door:
   door_open_for: 300
   suppress_duplicate_window: 300
   intruder_timeout: 60
+
+door_bell:
+  module: doorbell
+  class: DoorBell
+  door_bell: binary_sensor.doorbell_button
+  notify:
+  - notify.ios_petro
+  - notify.ios_lambo
+  media_player:
+  - media_player.living_room_dot
+  - media_player.master_dot
+  debug: true
 
 extendlighttoggle:
   module: extend_light_toggle

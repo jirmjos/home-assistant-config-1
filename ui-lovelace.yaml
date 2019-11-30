@@ -121,6 +121,10 @@ anchors:
 
   # ? x ? INFORMATION DISPLAY FOR UPTIME
 
+  cb_lock: &cb_lock
+    lock:
+      enabled: true
+
   cb_uptime: &cb_uptime
     type: 'custom:button-card'
     layout: icon_name_state2nd
@@ -1462,7 +1466,7 @@ views:
                 name: Inside
               - <<: *cb_overview_counters
                 entity: group.outside
-                lock: true
+                <<: *cb_lock
                 icon: mdi:wall-sconce
                 name: Outside
               - <<: *cb_overview_counters
@@ -2905,7 +2909,9 @@ views:
             cards:
               - <<: *cb_spacer_10px
               - <<: *cb_3x_glow_no_label
-                lock: true
+                lock:
+                  enabled: >
+                    [[[ return entity.state === 'off'; ]]]
                 icon: mdi:amazon-alexa
                 name: Echo
                 entity: switch.floating_outlet_switch
@@ -3117,15 +3123,15 @@ views:
                 name: Lights
                 entity: group.outdoor_lights
                 icon: mdi:alpha-o-box
-                lock: true
+                <<: *cb_lock
               - <<: *cb_3x_glow_no_label
                 name: Garage
                 entity: switch.sconces_garage
-                lock: true
+                <<: *cb_lock
               - <<: *cb_3x_glow_no_label
                 name: Main
                 entity: switch.sconces_main_entrance
-                lock: true
+                <<: *cb_lock
               - <<: *cb_spacer_10px
           - type: horizontal-stack
             cards:
@@ -3133,7 +3139,7 @@ views:
               - <<: *cb_3x_glow_no_label
                 name: Passenger
                 entity: switch.passenger_sconce
-                lock: true
+                <<: *cb_lock
               - <<: *cb_3x_glow_no_label
                 name: Outlet
                 entity: switch.outside_porch
@@ -3761,6 +3767,18 @@ views:
         camera_image: camera.living_room_clear
         entities:
           - switch.living_room_clear_state
+      - type: picture-glance
+        <<: *card_mod_mainstyle
+        title: Floating
+        camera_image: camera.floating_clear
+        entities:
+          - switch.floating_clear_state
+      - type: picture-glance
+        <<: *card_mod_mainstyle
+        title: Floating
+        camera_image: camera.foyer_clear
+        entities:
+          - switch.floating_clear_state
 
   ###########################
   # VIEW - IMAGE PROCESSING #
@@ -3790,6 +3808,26 @@ views:
           service: image_processing.scan
           service_data:
             entity_id: image_processing.tensorflow_living_room_clear
+      - type: picture-entity
+        <<: *card_mod_mainstyle
+        entity: camera.floating_post_process
+        name: Floating
+        show_state: false
+        tap_action:
+          action: call-service
+          service: image_processing.scan
+          service_data:
+            entity_id: image_processing.tensorflow_floating_clear
+      - type: picture-entity
+        <<: *card_mod_mainstyle
+        entity: camera.foyer_post_process
+        name: Floating
+        show_state: false
+        tap_action:
+          action: call-service
+          service: image_processing.scan
+          service_data:
+            entity_id: image_processing.tensorflow_foyer_clear
 
   ###########
   # TESTING #
