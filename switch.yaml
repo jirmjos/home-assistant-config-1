@@ -707,6 +707,6 @@
                   {{ not muted }}
                   
     # Zoneminder cameras
-  - platform: zoneminder
-    command_on: Record
-    command_off: Monitor
+  # - platform: zoneminder
+    # command_on: Record
+    # command_off: Monitor

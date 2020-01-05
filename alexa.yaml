@@ -53,6 +53,8 @@
         - switch.living_room_window
         - switch.office_window
         - switch.echo_through_receiver
+        - media_player.living_room_speakers
+        - media_player.dining_room_speakers
     entity_config:
       fan.master_fixture:
         name: Master Fan
@@ -67,7 +69,7 @@
       switch.switch:
         name: Switch
       switch.tv:
-        name: TV
+        name: Cable
       switch.xbox_one:
         name: Xbox One
       switch.netflix:
@@ -93,7 +95,7 @@
       light.kitchen_island:
         name: Island Lights
       light.living_room:
-        name: Living Room Lamps
+        name: Living Room Light
       light.master_bathroom_cans:
         name: Master Can
       light.master_closet:
@@ -162,3 +164,7 @@
         name: Office Outlet
       switch.echo_through_receiver:
         name: Echo
+      media_player.living_room_speakers:
+        name: Living Room Speakers
+      media_player.dining_room_speakers:
+        name: Dining Room Speakers

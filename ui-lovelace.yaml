@@ -352,6 +352,60 @@ anchors:
       action: toggle
     hold_action:
       action: more-info
+
+  # 3 BUTTONS PER ROW - THEME - NO LABEL - OPEN
+      
+  cb_3x_glow_no_label_open: &cb_3x_glow_no_label_open
+    type: "custom:button-card"
+    layout: icon_label
+    color: auto
+    aspect_ratio: 1/1
+    show_state: true
+    show_name: true
+    show_label: false
+    styles:
+      grid:
+        - grid-template-rows: 42px auto 42px
+        - grid-template-columns: 42px auto
+      card:
+        - border-radius: 15px
+        - margin: 5px 5px 0px 0px
+        - padding: 0px 0px
+      icon:
+        - height: 30px
+        - width: 30px
+      name:
+        - justify-self: start
+        - padding: 0px 10px
+        - font-size: 13px
+      state:
+        - font-size: 11px
+        - font-family: Helvetica
+        - text-transform: capitalize
+        - font-weight: bold
+        - align-self: end
+        - justify-self: start
+        - padding: 9px 10px
+      lock:
+        - align-items: flex-end
+    state:
+      - value: "open"
+        styles:
+          icon:
+            - color: var(--accent-color)
+          card:
+            - --paper-card-background-color: rgba(40, 40, 40)
+            - box-shadow: 0px 0px 10px 3px var(--accent-color)
+          name:
+            - color: white
+          state:
+            - color: white
+          label:
+            - color: white
+    tap_action:
+      action: toggle
+    hold_action:
+      action: more-info
   
   # 3 BUTTONS PER ROW - THEME - LABEL TEMPLATE
   
@@ -2852,8 +2906,19 @@ views:
                 name: Light
                 entity: switch.garage_cans
               - <<: *cb_3x_glow_no_label
-                name: Door
+                name: Entrance
                 entity: switch.garage_entry
+              - <<: *cb_spacer_10px
+          - type: horizontal-stack
+            cards:
+              - <<: *cb_spacer_10px
+              - <<: *cb_3x_glow_no_label_open
+                name: Door
+                entity: cover.garage_door
+                icon: >
+                  [[[ return (entity.state === 'open') ? 'mdi:garage-open' : 'mdi:garage'; ]]]
+              - <<: *cb_spacer_square
+              - <<: *cb_spacer_square
               - <<: *cb_spacer_10px
                 
       #####################
@@ -3755,30 +3820,22 @@ views:
     icon: mdi:cctv
     title: Surveillance
     cards:
-      - type: picture-glance
+      - type: picture-entity
         <<: *card_mod_mainstyle
-        title: Garage
-        camera_image: camera.garage_clear
-        entities:
-          - switch.garage_clear_state
-      - type: picture-glance
+        entity: camera.garage
+        show_state: false
+      - type: picture-entity
         <<: *card_mod_mainstyle
-        title: Downstairs
-        camera_image: camera.living_room_clear
-        entities:
-          - switch.living_room_clear_state
-      - type: picture-glance
+        entity: camera.common
+        show_state: false
+      - type: picture-entity
         <<: *card_mod_mainstyle
-        title: Floating
-        camera_image: camera.floating_clear
-        entities:
-          - switch.floating_clear_state
-      - type: picture-glance
+        entity: camera.floating
+        show_state: false
+      - type: picture-entity
         <<: *card_mod_mainstyle
-        title: Floating
-        camera_image: camera.foyer_clear
-        entities:
-          - switch.floating_clear_state
+        entity: camera.foyer
+        show_state: false
 
   ###########################
   # VIEW - IMAGE PROCESSING #
@@ -3800,14 +3857,14 @@ views:
             entity_id: image_processing.tensorflow_garage_clear
       - type: picture-entity
         <<: *card_mod_mainstyle
-        entity: camera.living_room_post_process
+        entity: camera.common_post_process
         name: Living Room
         show_state: false
         tap_action:
           action: call-service
           service: image_processing.scan
           service_data:
-            entity_id: image_processing.tensorflow_living_room_clear
+            entity_id: image_processing.tensorflow_common_clear
       - type: picture-entity
         <<: *card_mod_mainstyle
         entity: camera.floating_post_process
@@ -3821,7 +3878,7 @@ views:
       - type: picture-entity
         <<: *card_mod_mainstyle
         entity: camera.foyer_post_process
-        name: Floating
+        name: Foyer
         show_state: false
         tap_action:
           action: call-service

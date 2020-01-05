@@ -2,11 +2,12 @@ utils:
   module: utils
   class: utils
 
-# events:
-  # module: events
-  # class: EventMonitor
-  # events:
-
+events:
+  module: events
+  class: EventMonitor
+  events:
+  - call_service
+  
 sundownlighttoggle:
   module: sundown_light_toggle
   class: SunDownLightToggle
@@ -65,7 +66,8 @@ peopletracker:
   company: input_select.company
   entities:
   - device_tracker.owens_iphone
-  - device_tracker.jimpetrnoiphone
+  - device_tracker.james_ipad
+  - device_tracker.james_iphone_10
   - person.petro
   - person.lambo
 

@@ -61,7 +61,7 @@ class DoorHandler(hass.Hass):
         
         self._level = INFO if args.get(CONF_DEBUG) else DEBUG
         self._override_sundown = args.get(CONF_DEBUG)
-        
+
         self.log(args, level=self._level)
         
         self.sensor = args.get(CONF_SENSOR)

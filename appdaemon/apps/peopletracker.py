@@ -47,7 +47,7 @@ class PeopleTracker(hass.Hass):
           don't have a person.
         """
         name = self.friendly_name(entity_id)
-        name = name.lower().replace(' iphone','').strip()
+        name = name.split(' ')[0]
         if name.endswith("'s"):
             name = name[:-2]
         return name.title()

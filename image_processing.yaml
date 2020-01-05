@@ -2,7 +2,7 @@
     confidence: 75
     scan_interval: 10000
     source:
-      - entity_id: camera.garage_clear
+      - entity_id: camera.garage
     file_out:
       - "/config/www/motion/{{ camera_entity.split('.')[1] }}_latest.jpg"
     model:
@@ -18,7 +18,7 @@
     confidence: 75
     scan_interval: 10000
     source:
-      - entity_id: camera.living_room_clear
+      - entity_id: camera.common
     file_out:
       - "/config/www/motion/{{ camera_entity.split('.')[1] }}_latest.jpg"
     model:
@@ -31,7 +31,7 @@
     confidence: 75
     scan_interval: 10000
     source:
-      - entity_id: camera.floating_clear
+      - entity_id: camera.floating
     file_out:
       - "/config/www/motion/{{ camera_entity.split('.')[1] }}_latest.jpg"
     model:
@@ -44,7 +44,7 @@
     confidence: 75
     scan_interval: 10000
     source:
-      - entity_id: camera.foyer_clear
+      - entity_id: camera.foyer
     file_out:
       - "/config/www/motion/{{ camera_entity.split('.')[1] }}_latest.jpg"
     model:
